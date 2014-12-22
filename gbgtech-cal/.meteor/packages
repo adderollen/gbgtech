@@ -7,6 +7,3 @@
 meteor-platform
 autopublish
 insecure
-jquery
-iron:router
-foundation
