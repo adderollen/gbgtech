@@ -1,14 +1,25 @@
 <head>
-  <title>gbgtech-site</title>
+	<title>GBGTECH</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
 
-  {{> hello}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="header"> 
+
+</template>
+
+<template name="home">
+
+</template>
+
+<template name="month">
+	{{#each day}}
+		{{>days}}
+	{{/each}}
+</template>
+
+<template name="day">
+	<h4 class="date-number">{{dateNumber}}</h4>
 </template>
