@@ -1,1 +1,5 @@
-routing.js
+Router.route('/', function() {
+	this.render('home')
+}, {
+	name: 'home'
+})

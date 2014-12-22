@@ -1,14 +1,27 @@
 <head>
-  <title>gbgtech-cal</title>
+	<title>gbgtech-cal</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+	{{> header}}
 
-  {{> hello}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="header">
+
+</template>
+
+<template name="home">
+	{{> month}}
+</template>
+
+<template name="month">
+	<input type="button" value="Generate Days Januari">
+	{{#each days}}
+		{{> day}}
+	{{/each}}
+</template>
+
+<template name="day">
+
 </template>

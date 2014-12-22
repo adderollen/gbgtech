@@ -1,0 +1,1 @@
+db.months.insert({"year": "2015","nbr": 0,"name": "January","nbrOfDays": 31,"startingDay": 3})
