@@ -17,14 +17,12 @@ Template.month.rendered = function() {
 		nbrOfDays = new Date(y, m+1, 0).getDate();
 		var weekNbr = 0;
 		var newWeek = false;
-		console.log("Year: " +y + ", Month: "+ m)
 		var startingDay = d.getDay(y,m,1)
 		if(startingDay == 0) {
 			startingDay = 6
 		} else {
 			startingDay = startingDay-1
 		}
-		console.log(startingDay)
 		$('#week-container').empty();
 		// Render first week of month
 		Blaze.renderWithData(Template.week, {'weekNbr': weekNbr}, $('#week-container').get(0))
@@ -48,35 +46,7 @@ Template.month.rendered = function() {
 			}
 		}
 		
-/*
 
-for (var i = 0; i < d.getDay(y,m+1,0); i++) {
-				$('#week-container').append('<tr id="week-'+weekNbr+'"></tr>')
-				$('#week-'+weekNbr).append('<td class="dummyday">dummy</td>')
-		};
-		days = Days.find({}).fetch();
-		if(days.length > 0) {
-			console.log(days[0].day)
-			var weekNbr = 0;
-			var newWeek = false;
-			
-			days.forEach(function(day) {
-				if(!newWeek) {
-					$('#week-'+weekNbr).append('<td class="day-'+day.day+'">'+day.date+'</td>')
-				} else {
-					$('#week-container').append('<tr id="week-'+weekNbr+'"></tr>')
-					$('#week-'+weekNbr).append('<td class="day-'+day.day+'">'+day.date+'</td>')
-				}
-				if(day.day == 6) {
-					newWeek = true;
-					weekNbr++;
-				}
-			})
-			for(var i = days[days.length-1].day; i < 6; i++) {
-				$('#week-'+weekNbr).append('<td class="dummyday">dummy</td>')
-			}
-		}
-		*/
 	})
 };
 
