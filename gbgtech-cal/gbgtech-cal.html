@@ -16,12 +16,34 @@
 </template>
 
 <template name="month">
-	<input type="button" value="Generate Days Januari">
-	{{#each days}}
-		{{> day}}
-	{{/each}}
+	<input id="days-generator" type="button" value="Generate Days Januari">
+	<input id="prev-month" class="month-nav" type="button" value="<- Previous Month">
+	<p class="month-nav">{{currentMonthAndYear}}</p>
+	<input id="next-month" class="month-nav" type="button" value="Next Month ->">
+	<div id="month-container">
+	<table>
+		<thead>
+			<tr>
+				<td>Monday</td>
+				<td>Tuesday</td>
+				<td>Wednesday</td>
+				<td>Thursday</td>
+				<td>Friday</td>
+				<td>Saturday</td>
+				<td>Sunday</td>
+			</tr>
+		</thead>
+		<tbody id="week-container">
+			
+		</tbody>
+	</table>
+	</div>
+</template>
+
+<template name="week">
+<tr id="week-{{weekNbr}}"></tr>
 </template>
 
 <template name="day">
-
+<td id="{{id}}">{{date}}</td>
 </template>
