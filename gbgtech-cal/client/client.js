@@ -11,7 +11,7 @@ Template.month.rendered = function() {
 		Session.set('currentYear', d.getFullYear())
 	} else {
 		Session.set('currentMonth', _.indexOf(monthNames, window.location.hash.substring(5)))
-		Session.set('currentYear', window.location.hash.substring(1,5))
+		Session.set('currentYear', parseInt(window.location.hash.substring(1,5)))
 	}
 
 	// Render the month view
@@ -70,6 +70,15 @@ Template.month.helpers({
 		var m = Session.get('currentMonth')
 		var y = Session.get('currentYear') 
 		return monthNames[m] + ", " + y
+	},
+
+	inOrg: function(userID) {
+		var orgs = Organizations.find({user: userID})
+		if(orgs.lenght > 0) {
+			console.log("got org")
+		} else {
+			console.log("no org")
+		}
 	}
 })
 
@@ -97,7 +106,16 @@ Template.month.events({
 		}
 		m = m-1
 		Session.set('currentMonth', m)
-		document.location.hash = y+monthNames[m]	}
+		document.location.hash = y+monthNames[m]	
+	},
+
+	'mouseenter a': function(evt,template) {
+		// Add a tooltip for the event
+	},
+
+	'mouseleave a': function(evt,template) {
+		// Remove the tooltip for the event
+	}
 })
 
 Template.eventList.helpers({
@@ -152,8 +170,11 @@ Template.orgCreate.events({
 	'submit form': function(evt, template) {
 		event.preventDefault();
 		var orgName = evt.target.orgName.value;
+		var owner = evt.target.orgOwner.value;
 		Organizations.insert({
 			createdAt: new Date(),
+			owner: owner,
+			members: [owner]
 			name: orgName
 		})
 		Router.go('orgView')

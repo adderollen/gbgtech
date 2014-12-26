@@ -11,3 +11,7 @@ foundation
 iron:router
 jquery
 jquery-ui
+accounts-google
+accounts-facebook
+accounts-ui
+accounts-twitter
