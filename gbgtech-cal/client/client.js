@@ -172,6 +172,38 @@ Template.orgList.helpers({
 Template.orgView.helpers({
 	getMember: function(userID) {
 		return Meteor.users.findOne({"_id": userID}).profile.name
+	},
+
+	orgOwner: function(orgID, userID) {
+		return orgID == userID;
+	},
+
+	isMember: function(orgID, userID) {
+		return Organizations.find({"_id": orgID, "members": {$in: [userID]}}).fetch()
+	},
+
+	isRequesting: function(orgID, userID) {
+		return Organizations.find({"_id": orgID, "requestingMembers": {$in: [userID]}}).fetch()
+	}
+})
+
+Template.orgView.events({
+	'click .request-membership-button': function(evt, template) {
+		var orgID = $(evt.target).attr('id');
+		Organizations.update({"_id": orgID}, {$push: {"requestingMembers": Meteor.user()._id}})
+	},
+
+	'click .accept-member': function(evt, template) {
+		var userID = $(evt.target).data('user');
+		var orgID = $(evt.target).data('org');
+		Organizations.update({"_id": orgID}, { $pull: { "requestingMembers": userID}})
+		Organizations.update({"_id": orgID}, { $push: {"members": userID}})
+	}, 
+
+	'click .deny-member': function(evt, template) {
+		var userID = $(evt.target).data('user');
+		var orgID = $(evt.target).data('org');
+		Organizations.update({"_id": orgID}, { $pull: { "requestingMembers": userID}})
 	}
 })
 
@@ -184,6 +216,7 @@ Template.orgCreate.events({
 			createdAt: new Date(),
 			owner: owner,
 			members: [owner],
+			requestingMembers: [],
 			name: orgName
 		})
 		Router.go('orgList')
