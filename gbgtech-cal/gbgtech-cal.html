@@ -48,6 +48,7 @@
 </template>
 
 <template name="eventList">
+	<a href="/event/new" class="button">New Event</a>
 	<ul>
 		{{#each events}}
 		<li><a href="/event/{{_id}}">{{date}} - {{name}} by {{org}}</a></li>

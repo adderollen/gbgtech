@@ -53,7 +53,11 @@ Template.month.rendered = function() {
 		var m = Session.get('currentMonth')
 		var y = Session.get('currentYear')
 
-
+		var events = Events.find({year: y, month: m}).fetch();
+		events.forEach(function(event) {
+			console.log('#'+y+"-"+m+"-"+event.day)
+			$('#'+y+"-"+m+"-"+event.day).append("<p>Event</p>")
+		})
 	})
 };
 
@@ -114,6 +118,7 @@ Template.eventCreate.events({
 		var date = evt.target.date.value;
 		var y = parseInt(date.substring(0,4))
 		var m = parseInt(date.substring(5,7))
+		m = m-1
 		var d = parseInt(date.substring(8,10))
 		Events.insert({
 			createdAt: new Date(),
@@ -121,7 +126,8 @@ Template.eventCreate.events({
 			org: org,
 			year: y,
 			month: m,
-			day: d
+			day: d,
+			date: date
 		})
 		Router.go('eventList')
 	}
