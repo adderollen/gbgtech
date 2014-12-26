@@ -47,6 +47,14 @@ Template.month.rendered = function() {
 			}
 		}
 	})
+
+	// Render all events in the calendar
+	this.autorun(function() {
+		var m = Session.get('currentMonth')
+		var y = Session.get('currentYear')
+
+
+	})
 };
 
 Template.month.helpers({
@@ -104,14 +112,16 @@ Template.eventCreate.events({
 		var eventName = evt.target.eventName.value;
 		var org = evt.target.org.value;
 		var date = evt.target.date.value;
-		console.log(eventName)
-		console.log(org)
-		console.log(date)
+		var y = parseInt(date.substring(0,4))
+		var m = parseInt(date.substring(5,7))
+		var d = parseInt(date.substring(8,10))
 		Events.insert({
 			createdAt: new Date(),
 			name: eventName,
 			org: org,
-			date: date
+			year: y,
+			month: m,
+			day: d
 		})
 		Router.go('eventList')
 	}

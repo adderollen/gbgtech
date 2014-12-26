@@ -22,6 +22,12 @@ Router.route('/event', function() {
 	name: 'eventList'
 })
 
+Router.route('/event/new', function() {
+	this.render('eventCreate')
+}, {
+	name: 'eventCreate'
+})
+
 Router.route('/event/:_id', function() {
 	this.render('eventView', {
 		data: function() {
@@ -32,8 +38,3 @@ Router.route('/event/:_id', function() {
 	})
 })
 
-Router.route('/event/new', function() {
-	this.render('eventCreate')
-}, {
-	name: 'eventCreate'
-})
