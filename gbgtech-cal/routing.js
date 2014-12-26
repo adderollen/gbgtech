@@ -32,7 +32,6 @@ Router.route('/event/:_id', function() {
 	this.render('eventView', {
 		data: function() {
 			templateData = { event: Events.findOne({_id: this.params._id})};
-			console.log(templateData)
 			return templateData;
 		}
 	})

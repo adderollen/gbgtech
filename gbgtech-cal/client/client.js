@@ -5,9 +5,14 @@ Template.home.helpers({
 })
 
 Template.month.rendered = function() {
-	var d = new Date()
-	Session.set('currentMonth', d.getMonth())
-	Session.set('currentYear', d.getFullYear())
+	if(!window.location.hash) {
+		var d = new Date()
+		Session.set('currentMonth', d.getMonth())
+		Session.set('currentYear', d.getFullYear())
+	} else {
+		Session.set('currentMonth', _.indexOf(monthNames, window.location.hash.substring(5)))
+		Session.set('currentYear', window.location.hash.substring(1,5))
+	}
 
 	// Render the month view
 	this.autorun(function() {
@@ -55,8 +60,7 @@ Template.month.rendered = function() {
 
 		var events = Events.find({year: y, month: m}).fetch();
 		events.forEach(function(event) {
-			console.log('#'+y+"-"+m+"-"+event.day)
-			$('#'+y+"-"+m+"-"+event.day).append("<p>Event</p>")
+			$('#'+y+"-"+m+"-"+event.day).append('<a href="/event/'+event._id+'">'+event.name+'</a>')
 		})
 	})
 };
@@ -72,23 +76,28 @@ Template.month.helpers({
 Template.month.events({
 	'click input#next-month': function(evt, template) {
 		var m = Session.get('currentMonth')
+		var y = Session.get('currentYear')
 		if(m == 11) {
 			m = -1
-			var y = Session.get('currentYear')
-			Session.set('currentYear', y+1)
+			y = y+1
+			Session.set('currentYear', y)
 		}
-		Session.set('currentMonth', m+1)
+		m= m+1
+		Session.set('currentMonth', m)
+		document.location.hash = y+monthNames[m]
 	},
 
 	'click input#prev-month': function(evt, template) {
 		var m = Session.get('currentMonth')
+		var y = Session.get('currentYear')
 		if(m == 0) {
 			m = 12
-			var y = Session.get('currentYear')
-			Session.set('currentYear', y-1)	
+			y = y-1	
+			Session.set('currentYear', y)
 		}
-		Session.set('currentMonth', m-1)
-	}
+		m = m-1
+		Session.set('currentMonth', m)
+		document.location.hash = y+monthNames[m]	}
 })
 
 Template.eventList.helpers({
