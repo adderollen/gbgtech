@@ -1,5 +1,8 @@
 var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+
+
+
 Template.home.helpers({
 
 })
@@ -73,9 +76,9 @@ Template.month.helpers({
 	},
 
 	inOrg: function(userID) {
-		var orgs = Organizations.find({user: userID})
-		if(orgs.lenght > 0) {
-			console.log("got org")
+		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
+		if(orgs.length > 0) {
+			return orgs
 		} else {
 			console.log("no org")
 		}
@@ -160,9 +163,15 @@ Template.eventCreate.events({
 	}
 })
 
-Template.orgView.helpers({
+Template.orgList.helpers({
 	organizations: function() {
 		return Organizations.find();	
+	}
+})
+
+Template.orgView.helpers({
+	getMember: function(userID) {
+		return Meteor.users.findOne({"_id": userID}).profile.name
 	}
 })
 
@@ -170,13 +179,13 @@ Template.orgCreate.events({
 	'submit form': function(evt, template) {
 		event.preventDefault();
 		var orgName = evt.target.orgName.value;
-		var owner = evt.target.orgOwner.value;
+		var owner = Meteor.user()._id;
 		Organizations.insert({
 			createdAt: new Date(),
 			owner: owner,
-			members: [owner]
+			members: [owner],
 			name: orgName
 		})
-		Router.go('orgView')
+		Router.go('orgList')
 	}
 })

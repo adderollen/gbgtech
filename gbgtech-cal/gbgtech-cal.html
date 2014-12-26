@@ -21,11 +21,11 @@
 	<input id="next-month" class="month-nav" type="button" value="Next Month ->">
 	{{> loginButtons}}
 	{{#if currentUser}}
-		{{#if inOrg currentUser}}
-			{{userOrg currentUser}}
-		{{else}}
-			<p>You are not connected to any organization, either create <a href="/organization/new">one here</a> or <a href="/organization/join">join one here</a></p>
-		{{/if}}
+	{{#if inOrg currentUser}}
+		<p>You are a member of:</p> <ul>{{#each inOrg currentUser}}<li><a href="/organization/{{_id}}">{{name}}</a></li>{{/each}}</ul>
+	{{else}}
+	<p>You are not connected to any organization, either create <a href="/organization/new">one here</a> or <a href="/organization/join">join one here</a></p>
+	{{/if}}
 	{{/if}}
 	<div id="month-container">
 		<table>
@@ -87,15 +87,25 @@
 	</form>
 </template>
 
-
-
-<template name="orgView">
+<template name="orgList">
 	<a href="/organization/new" class="button">Create new organization</a>
 	<ul>
 		{{#each organizations}}
-		<li>{{name}}</li>	
+		<li><a href="/organization/{{_id}}">{{name}}</a></li>	
 		{{/each}}
 	</ul>
+</template>
+
+<template name="orgView">
+	<h2>{{org.name}}</h2>
+	<h3>Owner: {{getMember org.owner}}</h3>
+	<h4>Members:</h4>
+	<ul>
+	{{#each org.members}}
+		<li>{{getMember this}}</li>
+		{{/each}}
+	</ul>
+
 </template>
 
 <template name="orgCreate">

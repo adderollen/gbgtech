@@ -5,15 +5,24 @@ Router.route('/', function() {
 })
 
 Router.route('/organization', function() {
-	this.render('orgView')
+	this.render('orgList')
 }, {
-	name: 'orgView'
+	name: 'orgList'
 })
 
 Router.route('/organization/new', function() {
 	this.render('orgCreate')
 }, {
 	name: 'orgCreate'
+})
+
+Router.route('/organization/:_id', function() {
+	this.render('orgView', {
+		data: function() {
+			templateData = { org: Organizations.findOne({_id: this.params._id})};
+			return templateData;
+		}
+	})
 })
 
 Router.route('/event', function() {
