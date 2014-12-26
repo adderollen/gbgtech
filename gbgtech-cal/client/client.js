@@ -9,6 +9,7 @@ Template.month.rendered = function() {
 	Session.set('currentMonth', d.getMonth())
 	Session.set('currentYear', d.getFullYear())
 
+	// Render the month view
 	this.autorun(function() {
 		var m = Session.get('currentMonth')
 		var y = Session.get('currentYear')
@@ -45,8 +46,6 @@ Template.month.rendered = function() {
 				weekNbr++;
 			}
 		}
-		
-
 	})
 };
 
@@ -59,24 +58,7 @@ Template.month.helpers({
 })
 
 Template.month.events({
-	'click #days-generator': function(evt, err) {
-		console.log("Created days")
-		currentMonth = Session.get('currentMonth')
-		currentMonth = Months.find({"nbr": currentMonth}).fetch()
-		console.log(currentMonth[0].nbrOfDays)
-		var date = 1;
-		for (var i = currentMonth[0].startingDay; i < currentMonth[0].nbrOfDays+currentMonth[0].startingDay; i++) {
-			Days.insert({
-				"month": currentMonth[0].nbr,
-				"date": date,
-				"day": i%7,
-				"events": []
-			})
-			date++;
-		}	
-	},
-
-	'click input#next-month': function(evt, err) {
+	'click input#next-month': function(evt, template) {
 		var m = Session.get('currentMonth')
 		if(m == 11) {
 			m = -1
@@ -86,7 +68,7 @@ Template.month.events({
 		Session.set('currentMonth', m+1)
 	},
 
-	'click input#prev-month': function(evt, err) {
+	'click input#prev-month': function(evt, template) {
 		var m = Session.get('currentMonth')
 		if(m == 0) {
 			m = 12
@@ -94,5 +76,33 @@ Template.month.events({
 			Session.set('currentYear', y-1)	
 		}
 		Session.set('currentMonth', m-1)
+	}
+})
+
+Template.eventCreate.helpers({
+	organizations: function() {
+		return Organizations.find();
+	}
+})
+
+Template.eventCreate.rendered = function() {
+	this.$('.datepicker').datepicker();
+}
+
+Template.orgView.helpers({
+	organizations: function() {
+		return Organizations.find();	
+	}
+})
+
+Template.orgCreate.events({
+	'submit form': function(evt, template) {
+		event.preventDefault();
+		var orgName = evt.target.orgName.value;
+		Organizations.insert({
+			createdAt: new Date(),
+			name: orgName
+		})
+		Router.go('orgView')
 	}
 })

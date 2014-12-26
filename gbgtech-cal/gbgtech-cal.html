@@ -16,34 +16,65 @@
 </template>
 
 <template name="month">
-	<input id="days-generator" type="button" value="Generate Days Januari">
 	<input id="prev-month" class="month-nav" type="button" value="<- Previous Month">
 	<p class="month-nav">{{currentMonthAndYear}}</p>
 	<input id="next-month" class="month-nav" type="button" value="Next Month ->">
 	<div id="month-container">
-	<table>
-		<thead>
-			<tr>
-				<td>Monday</td>
-				<td>Tuesday</td>
-				<td>Wednesday</td>
-				<td>Thursday</td>
-				<td>Friday</td>
-				<td>Saturday</td>
-				<td>Sunday</td>
-			</tr>
-		</thead>
-		<tbody id="week-container">
-			
-		</tbody>
-	</table>
+		<table>
+			<thead>
+				<tr>
+					<td>Monday</td>
+					<td>Tuesday</td>
+					<td>Wednesday</td>
+					<td>Thursday</td>
+					<td>Friday</td>
+					<td>Saturday</td>
+					<td>Sunday</td>
+				</tr>
+			</thead>
+			<tbody id="week-container">
+
+			</tbody>
+		</table>
 	</div>
 </template>
 
 <template name="week">
-<tr id="week-{{weekNbr}}"></tr>
+	<tr id="week-{{weekNbr}}"></tr>
 </template>
 
 <template name="day">
-<td id="{{id}}">{{date}}</td>
+	<td id="{{id}}">{{date}}</td>
+</template>
+
+<template name="eventCreate">
+	<form>
+		<input type="text" name="eventName" placeholder="Event name" >
+		<label>Organization
+			<select name="organizationHost">
+				{{#each organization}}
+				<option value="{{id}}">{{name}}</option>
+				{{/each}}
+			</select>
+		</label>
+		<label>Date
+			<input class="datepicker" name="date">
+		</label>
+	</form>
+</template>
+
+<template name="orgView">
+<a href="/organization/new" class="button">Create new organization</a>
+<ul>
+{{#each organizations}}
+	<li>{{name}}</li>	
+{{/each}}
+</ul>
+</template>
+
+<template name="orgCreate">
+	<form>
+		<input type="text" name="orgName" placeholder="Organization name" required>
+		<input type="submit" class="button" value="Create Organization">
+	</form>
 </template>
