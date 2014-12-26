@@ -79,15 +79,43 @@ Template.month.events({
 	}
 })
 
+Template.eventList.helpers({
+	events: function() {
+		return Events.find();
+	}
+})
+
+Template.eventCreate.rendered = function() {
+	this.$('.datepicker').datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0
+	});
+}
+
 Template.eventCreate.helpers({
 	organizations: function() {
 		return Organizations.find();
 	}
 })
 
-Template.eventCreate.rendered = function() {
-	this.$('.datepicker').datepicker();
-}
+Template.eventCreate.events({
+	'submit form': function(evt, template) {
+		event.preventDefault();
+		var eventName = evt.target.eventName.value;
+		var org = evt.target.org.value;
+		var date = evt.target.date.value;
+		console.log(eventName)
+		console.log(org)
+		console.log(date)
+		Events.insert({
+			createdAt: new Date(),
+			name: eventName,
+			org: org,
+			date: date
+		})
+		Router.go('eventList')
+	}
+})
 
 Template.orgView.helpers({
 	organizations: function() {

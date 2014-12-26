@@ -16,6 +16,22 @@ Router.route('/organization/new', function() {
 	name: 'orgCreate'
 })
 
+Router.route('/event', function() {
+	this.render('eventList')
+}, {
+	name: 'eventList'
+})
+
+Router.route('/event/:_id', function() {
+	this.render('eventView', {
+		data: function() {
+			templateData = { event: Events.findOne({_id: this.params._id})};
+			console.log(templateData)
+			return templateData;
+		}
+	})
+})
+
 Router.route('/event/new', function() {
 	this.render('eventCreate')
 }, {

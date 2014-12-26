@@ -47,12 +47,26 @@
 	<td id="{{id}}">{{date}}</td>
 </template>
 
+<template name="eventList">
+	<ul>
+		{{#each events}}
+		<li><a href="/event/{{_id}}">{{date}} - {{name}} by {{org}}</a></li>
+		{{/each}}
+	</ul>
+</template>
+
+<template name="eventView">
+	<h2>{{event.name}}</h2>
+	<h3>{{event.date}}</h3>
+	<h4>by {{event.org}}</h4>
+</template>
+
 <template name="eventCreate">
 	<form>
 		<input type="text" name="eventName" placeholder="Event name" >
 		<label>Organization
-			<select name="organizationHost">
-				{{#each organization}}
+			<select name="org">
+				{{#each organizations}}
 				<option value="{{id}}">{{name}}</option>
 				{{/each}}
 			</select>
@@ -60,16 +74,19 @@
 		<label>Date
 			<input class="datepicker" name="date">
 		</label>
+		<input type="submit" class="button" value="Create event">
 	</form>
 </template>
 
+
+
 <template name="orgView">
-<a href="/organization/new" class="button">Create new organization</a>
-<ul>
-{{#each organizations}}
-	<li>{{name}}</li>	
-{{/each}}
-</ul>
+	<a href="/organization/new" class="button">Create new organization</a>
+	<ul>
+		{{#each organizations}}
+		<li>{{name}}</li>	
+		{{/each}}
+	</ul>
 </template>
 
 <template name="orgCreate">
