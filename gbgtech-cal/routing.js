@@ -23,6 +23,8 @@ Router.route('/organization/:_id', function() {
 			return templateData;
 		}
 	})
+}, {
+	name: 'orgView'
 })
 
 Router.route('/event', function() {
@@ -37,6 +39,17 @@ Router.route('/event/new', function() {
 	name: 'eventCreate'
 })
 
+Router.route('/event/:_id/edit', function() {
+	this.render('eventEdit', {
+		data: function() {
+			templateData = { event: Events.findOne({_id: this.params._id})}
+			return templateData;
+		}
+	})
+}, {
+	name: 'eventEdit'
+})
+
 Router.route('/event/:_id', function() {
 	this.render('eventView', {
 		data: function() {
@@ -44,5 +57,15 @@ Router.route('/event/:_id', function() {
 			return templateData;
 		}
 	})
+}, {
+	name: 'eventView'
+})
+
+
+
+Router.route('/admin', function() {
+	this.render('adminPanel')
+}, {
+	name: 'adminPanel'
 })
 

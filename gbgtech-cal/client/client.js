@@ -4,7 +4,7 @@ function closeMenu() {
 	var state = $('#menu-open').data('state')
 	if(state == "open") {
 		$('#menu-container').css('left', "-8em");
-		$('#menu-open').text('Open')
+		$('#menu-open').text('Menu')
 		$('#menu-open').data('state', 'closed')
 	} 
 }
@@ -15,12 +15,21 @@ $(document).on('click', function(event) {
   }
 });
 
+Template.menu.helpers({
+	inOrg: function(userID) {
+		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
+		if(orgs.length > 0) {
+			return orgs
+		}
+	}
+})
+
 Template.menu.events({
 	'click a#menu-open': function(evt, template) {
 		var state = $(evt.target).data('state')
 		if(state == "open") {
 			$('#menu-container').css('left', "-8em");
-			$(evt.target).text('Open')
+			$(evt.target).text('Menu')
 			$(evt.target).data('state', 'closed')
 		} else {
 			$('#menu-container').css('left', 0);
@@ -152,6 +161,15 @@ Template.eventList.helpers({
 	}
 })
 
+Template.eventView.helpers({
+	getOrg: function(orgID) {
+		console.log(orgID)
+		var org = Organizations.findOne({"_id": orgID})
+		console.log(org)
+		return org
+	}
+})
+
 Template.eventCreate.rendered = function() {
 	this.$('.datepicker').datepicker({
 		dateFormat: "yy-mm-dd",
@@ -167,9 +185,9 @@ Template.eventCreate.helpers({
 
 Template.eventCreate.events({
 	'submit form': function(evt, template) {
-		event.preventDefault();
+		evt.preventDefault();
 		var eventName = evt.target.eventName.value;
-		var org = evt.target.org.value;
+		var org = Organizations.findOne({"name": evt.target.org.value});
 		var date = evt.target.date.value;
 		var y = parseInt(date.substring(0,4))
 		var m = parseInt(date.substring(5,7))
@@ -178,13 +196,56 @@ Template.eventCreate.events({
 		Events.insert({
 			createdAt: new Date(),
 			name: eventName,
-			org: org,
+			org: org._id,
 			year: y,
 			month: m,
 			day: d,
 			date: date
 		})
 		Router.go('eventList')
+	}
+})
+
+Template.eventEdit.rendered = function() {
+	var event = Events.findOne({"_id": document.URL.substring(28, 45)})
+	this.$('.datepicker').datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0
+	});
+	this.$('.datepicker').datepicker('setDate', event.date)
+}
+
+Template.eventEdit.helpers({
+	organizations: function(userID) {
+		return Organizations.find({"members": {$in: [userID]}});
+	},
+
+	isSelected: function(orgIDOne, orgIDTwo) {
+		if (orgIDOne == orgIDTwo) {
+			return "selected"
+		};
+	}
+})
+
+Template.eventEdit.events({
+	'submit form': function(evt, template) {
+		evt.preventDefault();
+		var eventName = evt.target.eventName.value;
+		var org = Organizations.findOne({"name": evt.target.org.value});
+		var date = evt.target.date.value;
+		var y = parseInt(date.substring(0,4))
+		var m = parseInt(date.substring(5,7))
+		m = m-1
+		var d = parseInt(date.substring(8,10))
+		Events.update({"_id": document.URL.substring(28, 45)},{$set: {
+			name: eventName,
+			org: org._id,
+			year: y,
+			month: m,
+			day: d,
+			date: date
+		}})
+		Router.go('adminPanel')
 	}
 })
 
@@ -245,5 +306,43 @@ Template.orgCreate.events({
 			name: orgName
 		})
 		Router.go('orgList')
+	}
+})
+
+Template.adminPanel.helpers({
+	inOrg: function(userID) {
+		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
+		if(orgs.length > 0) {
+			return orgs
+		}
+	},
+
+	eventsForOrg: function(orgID) {
+		var events = Events.find({"org": orgID}).fetch()
+		return events
+	}
+})
+
+Template.adminPanel.events({
+	'click .delete': function(evt, template) {
+		$(evt.target).val('Are you sure?')
+		$(evt.target).removeClass('delete').addClass('confirm')
+	},
+
+	'click .confirm': function(evt, template) {
+		if($(evt.target).data('type') == "org") {
+			Organizations.remove({_id: $(evt.target).data('id')})
+			Meteor.call('removeEvents', $(evt.target).data('id'), function(err, result) {	
+			})
+		} else {
+			Events.remove({_id: $(evt.target).data('id')})
+		}
+	},
+
+	'click': function(evt, template) {
+		if(!$(evt.target).hasClass('confirm')) {
+			$('.confirm').val('Delete')
+			$('.confirm').removeClass('confirm').addClass('delete')
+		}
 	}
 })

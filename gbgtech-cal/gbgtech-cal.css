@@ -6,6 +6,7 @@
 	display: inline-block;
 	background: black;
 	height: 100%;
+	z-index: 1;
 }
 
 #menu-open {
@@ -15,4 +16,9 @@
 
 .month-nav {
 	display: inline-block;
+}
+
+.delete,
+.confirm {
+	background-color: red;
 }
