@@ -1,5 +1,18 @@
 /* CSS declarations go here */
 
+#menu-container {
+	left: -8em;
+	position: absolute;
+	display: inline-block;
+	background: black;
+	height: 100%;
+}
+
+#menu-open {
+	position: absolute;
+	right: -7em;
+}
+
 .month-nav {
 	display: inline-block;
 }

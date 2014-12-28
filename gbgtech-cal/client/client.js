@@ -1,10 +1,37 @@
 var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+function closeMenu() {
+	var state = $('#menu-open').data('state')
+	if(state == "open") {
+		$('#menu-container').css('left', "-8em");
+		$('#menu-open').text('Open')
+		$('#menu-open').data('state', 'closed')
+	} 
+}
 
+$(document).on('click', function(event) {
+  if (!$(event.target).closest('#menu-container').length) {
+    closeMenu();
+  }
+});
 
+Template.menu.events({
+	'click a#menu-open': function(evt, template) {
+		var state = $(evt.target).data('state')
+		if(state == "open") {
+			$('#menu-container').css('left', "-8em");
+			$(evt.target).text('Open')
+			$(evt.target).data('state', 'closed')
+		} else {
+			$('#menu-container').css('left', 0);
+			$(evt.target).text('Close')
+			$(evt.target).data('state', 'open')
+		}
+	},
 
-Template.home.helpers({
-
+	'click a.menu-list-item-link': function(evt, template) {
+		closeMenu();
+	}
 })
 
 Template.month.rendered = function() {
@@ -79,8 +106,6 @@ Template.month.helpers({
 		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
 		if(orgs.length > 0) {
 			return orgs
-		} else {
-			console.log("no org")
 		}
 	}
 })
@@ -135,8 +160,8 @@ Template.eventCreate.rendered = function() {
 }
 
 Template.eventCreate.helpers({
-	organizations: function() {
-		return Organizations.find();
+	organizations: function(userID) {
+		return Organizations.find({"members": {$in: [userID]}});
 	}
 })
 

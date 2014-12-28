@@ -4,6 +4,7 @@
 
 <body>
 	{{> header}}
+	{{> menu}}
 
 </body>
 
@@ -15,6 +16,18 @@
 	{{> month}}
 </template>
 
+<template name="menu">
+<div id="menu-container" class="menu">
+<a id="menu-open" href="#" class="button" data-state="closed">Open</a>
+<ul id="menu-list">
+	<li class="menu-list-item"><a href="/" class="menu-list-item-link">Home</a></li>
+	<li class="menu-list-item"><a href="/event" class="menu-list-item-link">Events</a></li>
+	<li class="menu-list-item"><a href="/organization" class="menu-list-item-link">Organizations</a></li>
+	<li class="menu-list-item"><a href="/event/new" class="menu-list-item-link">Create Event</a></li>
+</ul>
+</div>
+</template>
+
 <template name="month">
 	<input id="prev-month" class="month-nav" type="button" value="<- Previous Month">
 	<p class="month-nav">{{currentMonthAndYear}}</p>
@@ -23,8 +36,9 @@
 	{{#if currentUser}}
 	{{#if inOrg currentUser}}
 		<p>You are a member of:</p> <ul>{{#each inOrg currentUser}}<li><a href="/organization/{{_id}}">{{name}}</a></li>{{/each}}</ul>
+		<a href="/event/new">Create a new event</a>
 	{{else}}
-	<p>You are not connected to any organization, either create <a href="/organization/new">one here</a> or <a href="/organization/join">join one here</a></p>
+	<p>You are not connected to any organization, either create <a href="/organization/new">one here</a> or <a href="/organization">join one here</a></p>
 	{{/if}}
 	{{/if}}
 	<div id="month-container">
@@ -65,6 +79,7 @@
 </template>
 
 <template name="eventView">
+	<a href="/event" class="button">Back</a>
 	<h2>{{event.name}}</h2>
 	<h3>{{event.date}}</h3>
 	<h4>by {{event.org}}</h4>
@@ -75,7 +90,7 @@
 		<input type="text" name="eventName" placeholder="Event name" >
 		<label>Organization
 			<select name="org">
-				{{#each organizations}}
+				{{#each organizations currentUser._id}}
 				<option value="{{id}}">{{name}}</option>
 				{{/each}}
 			</select>
@@ -83,6 +98,7 @@
 		<label>Date
 			<input class="datepicker" name="date">
 		</label>
+		<a href="/event" class="button">Back</a>
 		<input type="submit" class="button" value="Create event">
 	</form>
 </template>
