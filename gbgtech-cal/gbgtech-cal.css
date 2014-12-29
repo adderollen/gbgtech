@@ -2,9 +2,10 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
 @import url(http://fonts.googleapis.com/css?family=Muli:300,400,300italic);
 
+
 /* Text */
 
-h1, h2, h3, h4, h5, h6, p, a {
+h1, h2, h3, h4, h5, h6, p, a, span {
 	font-family: 'Muli', sans-serif;
 	font-weight: 400;
 }
@@ -104,6 +105,19 @@ a:hover {
 	text-decoration:underline;
 }
 
+/* Buttons */
+
+.button {
+	background: #f1bb1b;
+color: black;
+border-radius: 10px !important;
+}
+
+.button:hover {
+	background: #BE8F03;
+	color: black;
+}
+
 /* Header */
 .header {
 	text-align: center;
@@ -115,8 +129,7 @@ a:hover {
 
 /* Menu */
 #overlay {
-	width: 100%;
-	height: 100%;
+	z-index: 1;
 	top: 0;
 	position: absolute;
 	background: rgba(0,0,0,0.0);
@@ -126,6 +139,8 @@ a:hover {
 	-o-transition: .5s;
 }
 #overlay.show {
+	width: 100%;
+	height: 100%;
 	background: rgba(0,0,0,0.5);
 	transition: .5s;
 	-moz-transition: .5s;
@@ -134,13 +149,13 @@ a:hover {
 }
 
 #menu-container {
+	z-index: 2;
 	left: -13em;
 	top: 0;
 	position: absolute;
 	display: inline-block;
 	background: black;
 	height: 100%;
-	z-index: 1;
 	width: 13em;
 	transition: .5s;
 	-moz-transition: .5s;
@@ -207,6 +222,60 @@ a:hover {
 	text-decoration: none;
 }
 
+#login-buttons a {
+	text-decoration: none;
+}
+
+#login-buttons .login-close-text {
+	border-bottom: none;
+	color: #f1bb1b;
+	transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	-o-transition: .5s;
+}
+
+#login-buttons .login-close-text:hover {
+	border-bottom: none;
+	text-decoration: underline;
+	transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	-o-transition: .5s;
+
+}
+
+#login-buttons .login-button {
+	background: #f1bb1b;
+	transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	-o-transition: .5s;
+}
+
+#login-buttons .login-button:hover {
+	background: black;
+	border-color: #f1bb1b;
+	transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	-o-transition: .5s;
+}
+
+#login-buttons .login-button span {
+	color: white;
+}
+
+#login-dropdown-list {
+	top: 30px;
+}
+
+.accounts-dialog {
+	width: 197px;
+	background: black;
+	border-color: #f1bb1b;
+}
+
 /* Month-view */
 .month-nav {
 	display: inline-block;
@@ -221,6 +290,14 @@ a:hover {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.datepicker {
+	width: 35%;
+margin-left: auto;
+margin-right: auto;
+margin-bottom: 1em;
+display: block;
 }
 
 /* Admin Panel */

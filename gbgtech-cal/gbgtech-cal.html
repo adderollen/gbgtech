@@ -12,7 +12,7 @@
 <template name="header">
 	<div class="header">
 		<img src="/gbgtech.jpg">
-		{{>loginButtons}}
+		
 	</div>
 </template>
 
@@ -36,6 +36,7 @@
 			<li class="menu-list-item"><h5><a href="/admin" class="menu-list-item-link">Admin Panel</a></h5></li>
 			{{/if}}
 			{{/if}}
+			{{>loginButtons}}
 		</ul>
 	</div>
 </template>
@@ -89,18 +90,20 @@
 
 <template name="eventCreate">
 	<div class="create-form-container">
+	<h2>Create an Event</h2>
 		<form>
-			<input type="text" name="eventName" placeholder="Event name" >
+			<label>Event Name
+			<input type="text" name="eventName" placeholder="Event name" required>
+			</label>
 			<label>Organization
-				<select name="org">
+				<select name="org" required>
 					{{#each organizations currentUser._id}}
 					<option value="{{id}}">{{name}}</option>
 					{{/each}}
 				</select>
 			</label>
-			<label>Date
-				<input class="datepicker" name="date">
-			</label>
+			<label>Date</label>
+			<input class="datepicker" name="date" required>
 			<input class="back-button button" type="button" value="Back">
 			<input type="submit" class="button" value="Create event">
 		</form>
@@ -172,14 +175,20 @@
 </template>
 
 <template name="orgCreate">
-	<form>
-		<label>Owner
-			<input type="text" name="orgOwner" value="{{currentUser.profile.name}}" disabled="true">
-		</label>
-		<input type="text" name="orgName" placeholder="Organization name" required>
-		<input class="back-button button" type="button" value="Back">
-		<input type="submit" class="button" value="Create Organization">
-	</form>
+	<div class="create-form-container">
+		<h2>Create an Organization</h2>
+		<form>
+			<label>Owner
+				<input type="text" name="orgOwner" value="{{currentUser.profile.name}}" disabled="true" required>
+			</label>
+			<label>Organization Name			
+			<input type="text" name="orgName" placeholder="E.g. AwesomeEvents" required>
+			</label>
+
+			<input class="back-button button" type="button" value="Back">
+			<input type="submit" class="button" value="Create Organization">
+		</form>
+	</div>
 </template>
 
 <template name="adminPanel">
@@ -251,31 +260,31 @@
 </template>
 
 <template name="headings">
-<h1 class="big">Heading 1 Big</h1>
-<h1>Heading 1</h1>
-<h1 class="thin">Heading 1 Thin</h1>
+	<h1 class="big">Heading 1 Big</h1>
+	<h1>Heading 1</h1>
+	<h1 class="thin">Heading 1 Thin</h1>
 
-<h2 class="big">Heading 2 Big</h2>
-<h2>Heading 2</h2>
-<h2 class="thin">Heading 2 Thin</h2>
+	<h2 class="big">Heading 2 Big</h2>
+	<h2>Heading 2</h2>
+	<h2 class="thin">Heading 2 Thin</h2>
 
-<h3 class="big">Heading 3 Big</h3>
-<h3>Heading 3</h3>
-<h3 class="thin">Heading 3 Thin</h3>
+	<h3 class="big">Heading 3 Big</h3>
+	<h3>Heading 3</h3>
+	<h3 class="thin">Heading 3 Thin</h3>
 
-<h4 class="big">Heading 4 Big</h4>
-<h4>Heading 4</h4>
-<h4 class="thin">Heading 4 Thin</h4>
+	<h4 class="big">Heading 4 Big</h4>
+	<h4>Heading 4</h4>
+	<h4 class="thin">Heading 4 Thin</h4>
 
-<h5 class="big">Heading 5 Big</h5>
-<h5>Heading 5</h5>
-<h5 class="thin">Heading 5 Thin</h5>
+	<h5 class="big">Heading 5 Big</h5>
+	<h5>Heading 5</h5>
+	<h5 class="thin">Heading 5 Thin</h5>
 
-<h6 class="big">Heading 6 Big</h6>
-<h6>Heading 6</h6>
-<h6 class="thin">Heading 6 Thin</h6>
+	<h6 class="big">Heading 6 Big</h6>
+	<h6>Heading 6</h6>
+	<h6 class="thin">Heading 6 Thin</h6>
 
-<p>The strategy in arena is considerably different than in constructed play. The emphasis in "draft" mode is to know the powerful basic cards and which classes have the best class-specific cards. Constructed, on the other hand is much more reliant on the player's card pool and synergies between the cards they choose to play. Players may wish to make sure they have a good grounding in the game and the capabilities of each class before entering the Arena, as the admission charge can make Arena play costly for unsuccessful players.</p>
+	<p>The strategy in arena is considerably different than in constructed play. The emphasis in "draft" mode is to know the powerful basic cards and which classes have the best class-specific cards. Constructed, on the other hand is much more reliant on the player's card pool and synergies between the cards they choose to play. Players may wish to make sure they have a good grounding in the game and the capabilities of each class before entering the Arena, as the admission charge can make Arena play costly for unsuccessful players.</p>
 
-<a href="#">A random <link rel="stylesheet" type="text/css" href=""></a>
+	<a href="#">A random <link rel="stylesheet" type="text/css" href=""></a>
 </template>

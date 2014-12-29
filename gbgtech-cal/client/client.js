@@ -14,9 +14,16 @@ function closeMenu() {
 }
 
 $(document).on('click', function(event) {
-  if (!$(event.target).closest('#menu-container').length) {
-    closeMenu();
-  }
+	if (!$(event.target).closest('#menu-container').length) {
+
+		if($(event.target).hasClass('login-link-text')) {
+			console.log(!$(event.target).closest('#menu-container').length)
+			console.log(!$(event.target).hasClass('login-link-text'))
+		} else {
+			closeMenu();
+		}
+
+	}
 });
 
 Template.menu.helpers({
@@ -207,8 +214,13 @@ Template.eventView.events({
 
 Template.eventCreate.rendered = function() {
 	this.$('.datepicker').datepicker({
+		showOtherMonths: true,
+		inline: true,
+		nextText: "",
+		prevText: "",
 		dateFormat: "yy-mm-dd",
-		minDate: 0
+		minDate: 0,
+		firstDay: 1
 	});
 }
 
