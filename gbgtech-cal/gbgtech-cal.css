@@ -1,17 +1,27 @@
 /* CSS declarations go here */
 
+.header {
+	text-align: center;
+}
+
+.header img {
+	height: 100px;
+}
+
 #menu-container {
-	left: -8em;
+	left: -11em;
+	top: 0;
 	position: absolute;
 	display: inline-block;
 	background: black;
 	height: 100%;
 	z-index: 1;
+	width: 11em;
 }
 
 #menu-open {
 	position: absolute;
-	right: -7em;
+	right: -6.55em;
 }
 
 .month-nav {
@@ -21,4 +31,8 @@
 .delete,
 .confirm {
 	background-color: red;
+}
+
+#manage-members {
+	display: none;
 }

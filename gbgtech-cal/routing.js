@@ -16,6 +16,17 @@ Router.route('/organization/new', function() {
 	name: 'orgCreate'
 })
 
+Router.route('/organization/:_id/edit', function() {
+	this.render('orgEdit', {
+		data: function() {
+			templateData = { org: Organizations.findOne({_id: this.params._id})}
+			return templateData
+		}
+	})
+}, {
+	name: 'orgEdit'
+})
+
 Router.route('/organization/:_id', function() {
 	this.render('orgView', {
 		data: function() {

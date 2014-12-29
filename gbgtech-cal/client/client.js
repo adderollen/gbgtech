@@ -1,9 +1,11 @@
 var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
+var adminID = "BNvfcjFh5SFaMQyDP";
+
 function closeMenu() {
 	var state = $('#menu-open').data('state')
 	if(state == "open") {
-		$('#menu-container').css('left', "-8em");
+		$('#menu-container').css('left', "-11em");
 		$('#menu-open').text('Menu')
 		$('#menu-open').data('state', 'closed')
 	} 
@@ -28,7 +30,7 @@ Template.menu.events({
 	'click a#menu-open': function(evt, template) {
 		var state = $(evt.target).data('state')
 		if(state == "open") {
-			$('#menu-container').css('left', "-8em");
+			$('#menu-container').css('left', "-11em");
 			$(evt.target).text('Menu')
 			$(evt.target).data('state', 'closed')
 		} else {
@@ -157,16 +159,35 @@ Template.month.events({
 
 Template.eventList.helpers({
 	events: function() {
-		return Events.find();
+		var date = new Date()
+		y = date.getFullYear()
+		m = date.getMonth()
+		d = date.getDate()
+		var events = Events.find({"year": {$gte: y}, "month": {$gte: m}, "day": {$gte: d}}).fetch()
+		return events;
+	},
+
+	getOrg: function(orgID) {
+		return Organizations.findOne(orgID).name
 	}
 })
 
 Template.eventView.helpers({
 	getOrg: function(orgID) {
-		console.log(orgID)
 		var org = Organizations.findOne({"_id": orgID})
-		console.log(org)
-		return org
+		return org.name
+	},
+	inOrg: function(user) {
+		var orgs = Organizations.find({ "members": {$in :[user._id] }}).fetch()
+		if(orgs.length > 0) {
+			return orgs
+		}
+	}
+})
+
+Template.eventView.events({
+	'click .back-button': function(evt, template) {
+		window.history.back();
 	}
 })
 
@@ -203,6 +224,10 @@ Template.eventCreate.events({
 			date: date
 		})
 		Router.go('eventList')
+	},
+
+	'click .back-button': function(evt, template) {
+		window.history.back();
 	}
 })
 
@@ -212,6 +237,7 @@ Template.eventEdit.rendered = function() {
 		dateFormat: "yy-mm-dd",
 		minDate: 0
 	});
+	$('#ui-datepicker-div').css('display','none');  
 	this.$('.datepicker').datepicker('setDate', event.date)
 }
 
@@ -246,12 +272,47 @@ Template.eventEdit.events({
 			date: date
 		}})
 		Router.go('adminPanel')
+	},
+
+	'click .back-button': function(evt, template) {
+		window.history.back();
 	}
 })
 
 Template.orgList.helpers({
 	organizations: function() {
 		return Organizations.find();	
+	}
+})
+
+Template.orgEdit.helpers({
+	isOwner: function(orgOwnerID, userID) {
+		if(orgOwnerID == userID || userID == adminID) {
+			return "selected";
+		}
+	},
+
+	getUserName: function(userID) {
+		var user = Meteor.users.findOne({_id: userID})
+		return user.profile.name;
+	}
+})
+
+Template.orgEdit.events({
+	'submit form': function(evt, template) {
+		evt.preventDefault();
+		var orgName = evt.target.orgName.value;
+		var owner = evt.target.owner.value;
+		var id = $(evt.target).data('id')
+		Organizations.update({_id: id}, {$set: {
+			owner: owner,
+			name: orgName
+		}})
+		Router.go('adminPanel')
+	},
+
+	'click .back-button': function(evt, template) {
+		window.history.back();
 	}
 })
 
@@ -279,6 +340,89 @@ Template.orgView.events({
 		Organizations.update({"_id": orgID}, {$push: {"requestingMembers": Meteor.user()._id}})
 	},
 
+	'click .back-button': function(evt, template) {
+		window.history.back();
+	}
+})
+
+Template.orgCreate.events({
+	'submit form': function(evt, template) {
+		evt.preventDefault();
+		var orgName = evt.target.orgName.value;
+		var owner = Meteor.user()._id;
+		Organizations.insert({
+			createdAt: new Date(),
+			owner: owner,
+			members: [owner],
+			requestingMembers: [],
+			name: orgName
+		})
+		Router.go('orgList')
+	},
+
+	'click .back-button': function(evt, template) {
+		window.history.back();
+	}
+})
+
+Template.adminPanel.helpers({
+	inOrg: function(user) {
+		var orgs = Organizations.find({ "members": {$in :[user._id] }}).fetch()
+		if(orgs.length > 0) {
+			return orgs
+		}
+	},
+
+	isAdmin: function(user) {
+		if(user._id == "BNvfcjFh5SFaMQyDP") {
+			return true;
+		} else {
+			return false;
+		}
+	},
+
+	organizations: function() {
+		return Organizations.find();
+	},
+
+	getMember: function(userID) {
+		return Meteor.users.findOne({_id: userID})
+	}
+
+	
+})
+
+Template.adminPanel.events({
+	'click .delete': function(evt, template) {
+		$(evt.target).val('Are you sure?')
+		$(evt.target).removeClass('delete').addClass('confirm')
+	},
+
+	'click .confirm': function(evt, template) {
+		var type = $(evt.target).data('type')
+		var id = $(evt.target).data('id')
+		if(type == "org") {
+			Organizations.remove({_id: id})
+			Meteor.call('removeEvents', id, function(err, result) {	
+			})
+		} else if(type == "event") {
+			Events.remove({_id: id})
+		} else {
+			Organizations.update({"_id": $(evt.target).data('org')}, { $pull: { "members": id}})
+		}
+	},
+
+	'mouseleave .confirm': function(evt, template) {
+		$('.confirm').blur()
+	},
+
+	'click': function(evt, template) {
+		if(!$(evt.target).hasClass('confirm')) {
+			$('.confirm').val('Delete')
+			$('.confirm').removeClass('confirm').addClass('delete')
+		}
+	},
+
 	'click .accept-member': function(evt, template) {
 		var userID = $(evt.target).data('user');
 		var orgID = $(evt.target).data('org');
@@ -290,59 +434,35 @@ Template.orgView.events({
 		var userID = $(evt.target).data('user');
 		var orgID = $(evt.target).data('org');
 		Organizations.update({"_id": orgID}, { $pull: { "requestingMembers": userID}})
-	}
-})
-
-Template.orgCreate.events({
-	'submit form': function(evt, template) {
-		event.preventDefault();
-		var orgName = evt.target.orgName.value;
-		var owner = Meteor.user()._id;
-		Organizations.insert({
-			createdAt: new Date(),
-			owner: owner,
-			members: [owner],
-			requestingMembers: [],
-			name: orgName
-		})
-		Router.go('orgList')
-	}
-})
-
-Template.adminPanel.helpers({
-	inOrg: function(userID) {
-		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
-		if(orgs.length > 0) {
-			return orgs
-		}
 	},
 
-	eventsForOrg: function(orgID) {
-		var events = Events.find({"org": orgID}).fetch()
-		return events
-	}
-})
-
-Template.adminPanel.events({
-	'click .delete': function(evt, template) {
-		$(evt.target).val('Are you sure?')
-		$(evt.target).removeClass('delete').addClass('confirm')
-	},
-
-	'click .confirm': function(evt, template) {
-		if($(evt.target).data('type') == "org") {
-			Organizations.remove({_id: $(evt.target).data('id')})
-			Meteor.call('removeEvents', $(evt.target).data('id'), function(err, result) {	
-			})
+	'click input.manage-members': function(evt, template) {
+		var state = $('#manage-members').css('display');
+		if(state == "none") {
+			$('#manage-members').css('display', 'block');
 		} else {
-			Events.remove({_id: $(evt.target).data('id')})
+			$('#manage-members').css('display', 'none');
+		}
+	}
+})
+
+Template.adminOrgItem.helpers({
+	eventsForOrg: function(orgID) {
+		var date = new Date()
+		y = date.getFullYear()
+		m = date.getMonth()
+		d = date.getDate()
+		var events = Events.find({"org": orgID, "year": {$gte: y}, "month": {$gte: m}, "day": {$gte: d}}).fetch()
+		return events
+	},
+
+	isOwner: function(ownerID, userID) {
+		if(ownerID == userID) {
+			return true;
 		}
 	},
 
-	'click': function(evt, template) {
-		if(!$(evt.target).hasClass('confirm')) {
-			$('.confirm').val('Delete')
-			$('.confirm').removeClass('confirm').addClass('delete')
-		}
+	getMember: function(userID) {
+		return Meteor.users.findOne({_id: userID}).profile.name
 	}
 })
