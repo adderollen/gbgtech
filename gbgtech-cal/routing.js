@@ -72,11 +72,14 @@ Router.route('/event/:_id', function() {
 	name: 'eventView'
 })
 
-
-
 Router.route('/admin', function() {
 	this.render('adminPanel')
 }, {
 	name: 'adminPanel'
 })
 
+Router.route('/headings', function() {
+	this.render('headings')
+}, {
+	name: 'headings'
+})

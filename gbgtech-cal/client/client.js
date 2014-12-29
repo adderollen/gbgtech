@@ -1,13 +1,15 @@
 var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-var adminID = "BNvfcjFh5SFaMQyDP";
+var adminID = "BNvfcjFh5SFaMQyDP"; // For localhost:3000
+//var adminID = "Nr8Xi8qiJRcthEWm7"; // For gbgtech.meteor.com
 
 function closeMenu() {
 	var state = $('#menu-open').data('state')
 	if(state == "open") {
-		$('#menu-container').css('left', "-11em");
-		$('#menu-open').text('Menu')
+		$('#overlay').removeClass('show');
+		$('#menu-container').removeClass('open');
 		$('#menu-open').data('state', 'closed')
+		$('#menu-open').addClass('closed').removeClass('open')
 	} 
 }
 
@@ -22,26 +24,38 @@ Template.menu.helpers({
 		var orgs = Organizations.find({ "members": {$in :[userID._id] }}).fetch()
 		if(orgs.length > 0) {
 			return orgs
+		} else if(userID._id == adminID) {
+			return true;
 		}
 	}
 })
 
 Template.menu.events({
-	'click a#menu-open': function(evt, template) {
+	'click #menu-open': function(evt, template) {
 		var state = $(evt.target).data('state')
 		if(state == "open") {
-			$('#menu-container').css('left', "-11em");
-			$(evt.target).text('Menu')
+			$('#menu-container').removeClass('open');
 			$(evt.target).data('state', 'closed')
+			$('#menu-open').addClass('closed').removeClass('open')
+			$('#overlay').removeClass('show');
 		} else {
-			$('#menu-container').css('left', 0);
-			$(evt.target).text('Close')
+			$('#menu-container').addClass('open');
 			$(evt.target).data('state', 'open')
+			$('#menu-open').addClass('open').removeClass('closed')
+			$('#overlay').addClass('show');
 		}
 	},
 
 	'click a.menu-list-item-link': function(evt, template) {
 		closeMenu();
+	},
+
+	'mouseenter #menu-open': function(evt, template) {
+		$(evt.target).attr('src', '/delete85_y.png')
+	},
+
+	'mouseleave #menu-open': function(evt, template) {
+		$(evt.target).attr('src', '/delete85.png')
 	}
 })
 
@@ -237,7 +251,7 @@ Template.eventEdit.rendered = function() {
 		dateFormat: "yy-mm-dd",
 		minDate: 0
 	});
-	$('#ui-datepicker-div').css('display','none');  
+	$('#ui-datepicker-div').css('display','none');  	
 	this.$('.datepicker').datepicker('setDate', event.date)
 }
 
@@ -374,7 +388,7 @@ Template.adminPanel.helpers({
 	},
 
 	isAdmin: function(user) {
-		if(user._id == "BNvfcjFh5SFaMQyDP") {
+		if(user._id == adminID) {
 			return true;
 		} else {
 			return false;

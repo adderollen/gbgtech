@@ -5,14 +5,15 @@
 <body>
 	{{> header}}
 	{{> menu}}
+	<div id="overlay"></div>
 
 </body>
 
 <template name="header">
-<div class="header">
-	<img src="/gbgtech.jpg">
-	{{>loginButtons}}
-</div>
+	<div class="header">
+		<img src="/gbgtech.jpg">
+		{{>loginButtons}}
+	</div>
 </template>
 
 <template name="home">
@@ -21,17 +22,18 @@
 
 <template name="menu">
 	<div id="menu-container" class="menu">
-		<a id="menu-open" href="#" class="button" data-state="closed">Menu</a>
+		<img id="menu-open" src="/delete85.png" data-state="closed">
+		<!--<a id="menu-open" href="#" class="button" data-state="closed">Menu</a>-->
 		<ul id="menu-list">
-			<li class="menu-list-item"><a href="/" class="menu-list-item-link">Home</a></li>
-			<li class="menu-list-item"><a href="/event" class="menu-list-item-link">Events</a></li>
-			<li class="menu-list-item"><a href="/organization" class="menu-list-item-link">Organizations</a></li>
+			<li class="menu-list-item"><h5><a href="/" class="menu-list-item-link">Home</a></h5></li>
+			<li class="menu-list-item"><h5><a href="/event" class="menu-list-item-link">Events</a></h5></li>
+			<li class="menu-list-item"><h5><a href="/organization" class="menu-list-item-link">Organizations</a></h5></li>
 			{{#if currentUser}}
-			<li class="menu-list-item"><a href="/organization/new" class="menu-list-item-link">Create Organization</a></li>
+			<li class="menu-list-item"><h5><a href="/organization/new" class="menu-list-item-link">Create Organization</a></h5></li>
 			{{#if inOrg currentUser}}
-			<li class="menu-list-item"><a href="/event/new" class="menu-list-item-link">Create Event</a></li>
+			<li class="menu-list-item"><h5><a href="/event/new" class="menu-list-item-link">Create Event</a></h5></li>
 			<br />
-			<li class="menu-list-item"><a href="/admin" class="menu-list-item-link">Admin Panel</a></li>
+			<li class="menu-list-item"><h5><a href="/admin" class="menu-list-item-link">Admin Panel</a></h5></li>
 			{{/if}}
 			{{/if}}
 		</ul>
@@ -86,21 +88,23 @@
 </template>
 
 <template name="eventCreate">
-	<form>
-		<input type="text" name="eventName" placeholder="Event name" >
-		<label>Organization
-			<select name="org">
-				{{#each organizations currentUser._id}}
-				<option value="{{id}}">{{name}}</option>
-				{{/each}}
-			</select>
-		</label>
-		<label>Date
-			<input class="datepicker" name="date">
-		</label>
-		<input class="back-button button" type="button" value="Back">
-		<input type="submit" class="button" value="Create event">
-	</form>
+	<div class="create-form-container">
+		<form>
+			<input type="text" name="eventName" placeholder="Event name" >
+			<label>Organization
+				<select name="org">
+					{{#each organizations currentUser._id}}
+					<option value="{{id}}">{{name}}</option>
+					{{/each}}
+				</select>
+			</label>
+			<label>Date
+				<input class="datepicker" name="date">
+			</label>
+			<input class="back-button button" type="button" value="Back">
+			<input type="submit" class="button" value="Create event">
+		</form>
+	</div>
 </template>
 
 <template name="eventEdit">
@@ -213,15 +217,15 @@
 		<input type="button" class="button delete" data-type="org" data-id="{{_id}}" value="Delete">
 		<input type="button" class="button manage-members" value="Manage members">
 		<div id="manage-members">
-		<ul>
-		{{#each members}}
-			{{#if isOwner ../owner this}}
-			<li>{{getMember this}} - Owner</li>
-			{{else}}
-			<li>{{getMember this}}<input type="button" class="button delete tiny" data-org="{{../_id}}" data-type="member" data-id="{{this}}" value="Delete"></li>
-			{{/if}}
-		{{/each}}	
-		</ul>
+			<ul>
+				{{#each members}}
+				{{#if isOwner ../owner this}}
+				<li>{{getMember this}} - Owner</li>
+				{{else}}
+				<li>{{getMember this}}<input type="button" class="button delete tiny" data-org="{{../_id}}" data-type="member" data-id="{{this}}" value="Delete"></li>
+				{{/if}}
+				{{/each}}	
+			</ul>
 		</div>
 		{{/if}}
 		{{#if eventsForOrg _id}}
@@ -238,10 +242,40 @@
 		{{#if isOwner owner currentUser._id}}
 		<h4>Requesting members:</h4>
 		<ul>
-		{{#each requestingMembers}}
-		<li>{{getMember this}}<input class="accept-member" type="button" value="Accept" data-user="{{this}}" data-org="{{../_id}}"><input class="deny-member" type="button" value="Deny" data-user="{{this}}" data-org="{{../_id}}"></li>
-		{{/each}}
+			{{#each requestingMembers}}
+			<li>{{getMember this}}<input class="accept-member" type="button" value="Accept" data-user="{{this}}" data-org="{{../_id}}"><input class="deny-member" type="button" value="Deny" data-user="{{this}}" data-org="{{../_id}}"></li>
+			{{/each}}
 		</ul>
 		{{/if}}
 	</li>
+</template>
+
+<template name="headings">
+<h1 class="big">Heading 1 Big</h1>
+<h1>Heading 1</h1>
+<h1 class="thin">Heading 1 Thin</h1>
+
+<h2 class="big">Heading 2 Big</h2>
+<h2>Heading 2</h2>
+<h2 class="thin">Heading 2 Thin</h2>
+
+<h3 class="big">Heading 3 Big</h3>
+<h3>Heading 3</h3>
+<h3 class="thin">Heading 3 Thin</h3>
+
+<h4 class="big">Heading 4 Big</h4>
+<h4>Heading 4</h4>
+<h4 class="thin">Heading 4 Thin</h4>
+
+<h5 class="big">Heading 5 Big</h5>
+<h5>Heading 5</h5>
+<h5 class="thin">Heading 5 Thin</h5>
+
+<h6 class="big">Heading 6 Big</h6>
+<h6>Heading 6</h6>
+<h6 class="thin">Heading 6 Thin</h6>
+
+<p>The strategy in arena is considerably different than in constructed play. The emphasis in "draft" mode is to know the powerful basic cards and which classes have the best class-specific cards. Constructed, on the other hand is much more reliant on the player's card pool and synergies between the cards they choose to play. Players may wish to make sure they have a good grounding in the game and the capabilities of each class before entering the Arena, as the admission charge can make Arena play costly for unsuccessful players.</p>
+
+<a href="#">A random <link rel="stylesheet" type="text/css" href=""></a>
 </template>
