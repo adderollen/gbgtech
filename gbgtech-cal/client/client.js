@@ -260,8 +260,13 @@ Template.eventCreate.events({
 Template.eventEdit.rendered = function() {
 	var event = Events.findOne({"_id": document.URL.substring(28, 45)})
 	this.$('.datepicker').datepicker({
+		showOtherMonths: true,
+		inline: true,
+		nextText: "",
+		prevText: "",
 		dateFormat: "yy-mm-dd",
-		minDate: 0
+		minDate: 0,
+		firstDay: 1
 	});
 	$('#ui-datepicker-div').css('display','none');  	
 	this.$('.datepicker').datepicker('setDate', event.date)

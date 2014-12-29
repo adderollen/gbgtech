@@ -246,7 +246,8 @@ border-radius: 10px !important;
 }
 
 #login-buttons .login-button {
-	background: #f1bb1b;
+	background: black;
+	border-color: #f1bb1b;
 	transition: .5s;
 	-moz-transition: .5s;
 	-webkit-transition: .5s;
@@ -254,8 +255,8 @@ border-radius: 10px !important;
 }
 
 #login-buttons .login-button:hover {
-	background: black;
-	border-color: #f1bb1b;
+	background: #f1bb1b;
+	border-color: black;
 	transition: .5s;
 	-moz-transition: .5s;
 	-webkit-transition: .5s;
@@ -281,7 +282,23 @@ border-radius: 10px !important;
 	display: inline-block;
 }
 
+.list {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.list ul {
+	list-style: none;
+	margin: 0;
+}
+
 /* Event */
+
+/* List events */
+.list .event-list {
+
+}
 
 /* Create Event */
 

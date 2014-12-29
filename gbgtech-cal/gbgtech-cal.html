@@ -74,11 +74,13 @@
 </template>
 
 <template name="eventList">
-	<ul>
-		{{#each events}}
-		<li><a href="/event/{{_id}}">{{date}} - {{name}} by {{getOrg org}}</a></li>
-		{{/each}}
-	</ul>
+	<div class="list">
+		<ul class="event-list">
+			{{#each events}}
+			<li><a href="/event/{{_id}}">{{date}} - {{name}} by {{getOrg org}}</a></li>
+			{{/each}}
+		</ul>
+	</div>
 </template>
 
 <template name="eventView">
@@ -90,10 +92,10 @@
 
 <template name="eventCreate">
 	<div class="create-form-container">
-	<h2>Create an Event</h2>
+		<h2>Create an Event</h2>
 		<form>
 			<label>Event Name
-			<input type="text" name="eventName" placeholder="Event name" required>
+				<input type="text" name="eventName" placeholder="Event name" required>
 			</label>
 			<label>Organization
 				<select name="org" required>
@@ -111,21 +113,23 @@
 </template>
 
 <template name="eventEdit">
-	<form>
-		<input type="text" name="eventName" placeholder="Event name" value="{{event.name}}">
-		<label>Organization
-			<select name="org">
-				{{#each organizations currentUser._id}}
-				<option value="{{id}}" {{isSelected _id ../event.org }}>{{name}}</option>
-				{{/each}}
-			</select>
-		</label>
-		<label>Date
-			<input class="datepicker" name="date">
-		</label>
-		<input class="back-button button" type="button" value="Back">
-		<input type="submit" class="button" value="Edit event">
-	</form>
+	<div class="create-form-container">
+		<form>
+			<input type="text" name="eventName" placeholder="Event name" value="{{event.name}}">
+			<label>Organization
+				<select name="org">
+					{{#each organizations currentUser._id}}
+					<option value="{{id}}" {{isSelected _id ../event.org }}>{{name}}</option>
+					{{/each}}
+				</select>
+			</label>
+			<label>Date
+				<input class="datepicker" name="date">
+			</label>
+			<input class="back-button button" type="button" value="Back">
+			<input type="submit" class="button" value="Edit event">
+		</form>
+	</div>
 </template>
 
 <template name="orgList">
@@ -138,18 +142,20 @@
 
 <template name="orgEdit">
 	{{#if isOwner org.owner currentUser._id}}
-	<form data-id="{{org._id}}">
-		<label>Owner
-			<select name="owner">
-				{{#each org.members}}
-				<option value="{{this}}" {{isOwner ../org.owner this}}>{{getUserName this}}</option>
-				{{/each}}
-			</select>
-		</label>
-		<input type="text" name="orgName" placeholder="Organization name" required value="{{org.name}}">
-		<input class="back-button button" type="button" value="Back">
-		<input type="submit" class="button" value="Edit Organization">
-	</form>
+	<div class="create-form-container">
+		<form data-id="{{org._id}}">
+			<label>Owner
+				<select name="owner" required>
+					{{#each org.members}}
+					<option value="{{this}}" {{isOwner ../org.owner this}}>{{getUserName this}}</option>
+					{{/each}}
+				</select>
+			</label>
+			<input type="text" name="orgName" placeholder="Organization name" required value="{{org.name}}">
+			<input class="back-button button" type="button" value="Back">
+			<input type="submit" class="button" value="Edit Organization">
+		</form>
+	</div>
 	{{/if}}
 </template>
 
@@ -182,7 +188,7 @@
 				<input type="text" name="orgOwner" value="{{currentUser.profile.name}}" disabled="true" required>
 			</label>
 			<label>Organization Name			
-			<input type="text" name="orgName" placeholder="E.g. AwesomeEvents" required>
+				<input type="text" name="orgName" placeholder="E.g. AwesomeEvents" required>
 			</label>
 
 			<input class="back-button button" type="button" value="Back">
