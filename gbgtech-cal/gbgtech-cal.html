@@ -83,6 +83,29 @@
 	</div>
 </template>
 
+<template name="eventListItem">
+	<li>
+		<div id="event-date-container">
+			<span class="month-container"></span>
+			<span class="date-container"></span>
+			<span class="time-container"></span>		
+		</div>
+		<div id="event-info-container">
+			<h6 class="big">{{name}}</h6>
+			<h6 class="thin">At: {{location}} - By: {{getOrg org}}</h6>
+			<p>{{description}}</p>
+		</div>
+		<div id="event-links-container">
+			{{#if fbLink}}
+			<a class="event-fb-link" href="{{fbLink}}"></a>
+			{{/if}}
+			{{#if meetupLink}}
+			<a class="event-meetup-link" href="{{meetupLink}}"></a>
+			{{/if}}
+		</div>
+	</li>
+</template>
+
 <template name="eventView">
 	<input class="back-button button" type="button" value="Back">
 	<h2>{{event.name}}</h2>
@@ -95,7 +118,13 @@
 		<h2>Create an Event</h2>
 		<form>
 			<label>Event Name
-				<input type="text" name="eventName" placeholder="Event name" required>
+				<input type="text" name="eventName" placeholder="What is the name of the event?" required autofocus>
+			</label>
+			<label>Location
+				<input type="text" name="eventLocation" placeholder="Where does the event take place?" required>
+			</label>
+			<label>Description
+				<textarea name="eventDescription" cols="5" rows="4" placeholder="Add a small text describing the event..." required></textarea>
 			</label>
 			<label>Organization
 				<select name="org" required>
@@ -104,8 +133,20 @@
 					{{/each}}
 				</select>
 			</label>
-			<label>Date</label>
-			<input class="datepicker" name="date" required>
+			<div class="dateAndTimeContainer">
+				<label>Date
+					<input type="text" class="datepicker" name="date" placeholder="Date for event" required>
+				</label>
+				<label>Time
+				<input id="datetimepicker" name="time" class="form-control" type="text" data-date-format="HH:mm" placeholder="Time for event" required/>
+				</label>
+			</div>
+			<label>Link to Facebook-event
+				<input type="url" name="eventFacebookLink" placeholder="(Optional)">
+			</label>
+			<label>Link to Meetup-event
+				<input type="url" name="eventMeetupLink" placeholder="(Optional)">
+			</label>
 			<input class="back-button button" type="button" value="Back">
 			<input type="submit" class="button" value="Create event">
 		</form>
@@ -115,7 +156,15 @@
 <template name="eventEdit">
 	<div class="create-form-container">
 		<form>
-			<input type="text" name="eventName" placeholder="Event name" value="{{event.name}}">
+			<label>Event Name
+				<input type="text" name="eventName" placeholder="Event name" value="{{event.name}}">
+			</label>
+			<label>Location
+				<input type="text" name="eventLocation" placeholder="Where does the event take place?" value="{{event.location}}" required>
+			</label>
+			<label>Description
+				<textarea name="eventDescription" cols="5" rows="4" placeholder="Add a small text describing the event..." value="{{event.description}}" required></textarea>
+			</label>
 			<label>Organization
 				<select name="org">
 					{{#each organizations currentUser._id}}
@@ -123,8 +172,19 @@
 					{{/each}}
 				</select>
 			</label>
-			<label>Date
-				<input class="datepicker" name="date">
+			<div class="dateAndTimeContainer">
+				<label>Date
+					<input type="text" class="datepicker" name="date" placeholder="Date for event" required>
+				</label>
+				<label>Time
+					<input id="datetimepicker" name="time" class="form-control" type="text" data-date-format="HH:mm" placeholder="Time for event" required/>
+				</label>
+			</div>
+			<label>Link to Facebook-event
+				<input type="url" name="eventFacebookLink" placeholder="(Optional)" value="{{event.fbLink}}">
+			</label>
+			<label>Link to Meetup-event
+				<input type="url" name="eventMeetupLink" placeholder="(Optional)"  value="{{event.meetupLink}}">
 			</label>
 			<input class="back-button button" type="button" value="Back">
 			<input type="submit" class="button" value="Edit event">

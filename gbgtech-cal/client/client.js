@@ -213,6 +213,10 @@ Template.eventView.events({
 })
 
 Template.eventCreate.rendered = function() {
+	this.$('#datetimepicker').datetimepicker({
+		pickDate: false,
+		use24hours: true
+	});
 	this.$('.datepicker').datepicker({
 		showOtherMonths: true,
 		inline: true,
@@ -235,6 +239,11 @@ Template.eventCreate.events({
 		evt.preventDefault();
 		var eventName = evt.target.eventName.value;
 		var org = Organizations.findOne({"name": evt.target.org.value});
+		var location = evt.target.eventLocation.value;
+		var description = evt.target.eventDescription.value;
+		var fbLink = evt.target.eventFacebookLink.value;
+		var meetupLink = evt.target.eventMeetupLink.value;
+		var time = evt.target.time.value;
 		var date = evt.target.date.value;
 		var y = parseInt(date.substring(0,4))
 		var m = parseInt(date.substring(5,7))
@@ -243,11 +252,16 @@ Template.eventCreate.events({
 		Events.insert({
 			createdAt: new Date(),
 			name: eventName,
+			location: location,
+			description: description,
+			fbLink: fbLink,
+			meetupLink: meetupLink,
 			org: org._id,
 			year: y,
 			month: m,
 			day: d,
-			date: date
+			date: date,
+			time: time
 		})
 		Router.go('eventList')
 	},

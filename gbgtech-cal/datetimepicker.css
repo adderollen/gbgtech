@@ -1,0 +1,71 @@
+.bootstrap-datetimepicker-widget {
+	width: 100px;
+}
+
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker table tr{
+	height: 30px;
+}
+
+.bootstrap-datetimepicker-widget .timepicker .timepicker-hours table tr:nth-of-type(even),
+.bootstrap-datetimepicker-widget .timepicker .timepicker-minutes table tr:nth-of-type(even),
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker table tr:nth-of-type(even) {
+	background-color: inherit;
+}
+
+.bootstrap-datetimepicker-widget .timepicker .timepicker-hours table td:hover,
+.bootstrap-datetimepicker-widget .timepicker .timepicker-minutes table td:hover {
+	background-color: #f1bb1b;
+}
+
+.bootstrap-datetimepicker-widget td {
+	height: 20px;
+	line-height: 20px;
+	width: 20px;
+	padding: 0;
+	border-radius: 5px;
+}
+
+.bootstrap-datetimepicker-widget td.separator {
+	width: 10px;
+}
+
+.bootstrap-datetimepicker-widget td span {
+	height: 20px;
+	line-height: 20px;
+	width: 20px;
+	border-radius: 100%;
+	margin-top: 7px;
+}
+
+.bootstrap-datetimepicker-widget td span.glyphicon-chevron-down {
+	background-image: url('/down.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	background-size: 70%;
+background-position-x: 3px;
+background-position-y: 3.5px;
+}
+
+.bootstrap-datetimepicker-widget td span.glyphicon-chevron-up {
+	background-image: url('/up.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	background-size: 70%;
+background-position-x: 3px;
+background-position-y: 2px;
+}
+
+.bootstrap-datetimepicker-widget td span:hover {
+	background-color: #f1bb1b;
+}
+
+.bootstrap-datetimepicker-widget .timepicker-hour, .bootstrap-datetimepicker-widget .timepicker-minute {
+	width: 20px;
+	font-weight: 400;
+}
+
+.bootstrap-datetimepicker-widget .timepicker-hour:hover, .bootstrap-datetimepicker-widget .timepicker-minute:hover {
+	background-color: inherit;
+}
