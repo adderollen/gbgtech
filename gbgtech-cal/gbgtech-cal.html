@@ -77,7 +77,7 @@
 	<div class="list">
 		<ul class="event-list">
 			{{#each events}}
-			<li><a href="/event/{{_id}}">{{date}} - {{name}} by {{getOrg org}}</a></li>
+			{{>eventListItem}}
 			{{/each}}
 		</ul>
 	</div>
@@ -86,9 +86,9 @@
 <template name="eventListItem">
 	<li>
 		<div id="event-date-container">
-			<span class="month-container"></span>
-			<span class="date-container"></span>
-			<span class="time-container"></span>		
+			<span class="month-container">{{getMonth month}}</span>
+			<span class="date-container">{{day}}</span>
+			<span class="time-container">{{time}}</span>		
 		</div>
 		<div id="event-info-container">
 			<h6 class="big">{{name}}</h6>

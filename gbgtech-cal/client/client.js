@@ -186,10 +186,16 @@ Template.eventList.helpers({
 		d = date.getDate()
 		var events = Events.find({"year": {$gte: y}, "month": {$gte: m}, "day": {$gte: d}}).fetch()
 		return events;
-	},
+	}
+})
 
+Template.eventListItem.helpers({
 	getOrg: function(orgID) {
 		return Organizations.findOne(orgID).name
+	},
+
+	getMonth: function(monthNbr) {
+		return monthNames[monthNbr].substring(0,3).toUpperCase();
 	}
 })
 

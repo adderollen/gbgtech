@@ -286,6 +286,7 @@ border-radius: 10px !important;
 	width: 50%;
 	margin-left: auto;
 	margin-right: auto;
+	padding-top: 2em;
 }
 
 .list ul {
@@ -297,7 +298,74 @@ border-radius: 10px !important;
 
 /* List events */
 .list .event-list {
+}
 
+.list .event-list li {
+	height: 100px;
+	box-shadow: 0px 1px 24px -7px;
+	display: flex;
+}
+
+.list .event-list li div {
+	
+}
+
+.list .event-list li div#event-date-container {
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	background-color: #f1bb1b;
+	height: inherit;
+	display: flex;
+	flex-direction: column;
+}
+
+.list .event-list li div#event-date-container span {
+
+	text-align: center;
+} 
+.list .event-list li div#event-date-container span.month-container {
+	letter-spacing: 4px;
+	padding-top: 2px;
+}
+
+.list .event-list li div#event-date-container span.month-container,
+.list .event-list li div#event-date-container span.time-container {
+	font-size: 1.3rem;
+}
+
+.list .event-list li div#event-date-container span.time-container {
+	letter-spacing: 0.4px;
+}
+
+.list .event-list li div#event-date-container span.date-container {
+	font-size: 3.1rem;
+	line-height: 34px;
+	font-weight: 300;
+	font-style: normal;
+}
+
+.list .event-list li div#event-date-container {
+}
+
+.list .event-list li div#event-info-container {
+	display: flex;
+	flex-direction: column;
+	padding-left: 0.7em;
+}
+
+.list .event-list li div#event-info-container h6.big {
+	margin-top: 0.4em;
+	margin-bottom: 0.3em;
+}
+
+.list .event-list li div#event-info-container h6.thin {
+	margin-top: -3px;
+	font-size: 0.9rem;
+	margin-bottom: 0;
+}
+
+.list .event-list li div#event-info-container p {
+	font-size: 0.8rem;
 }
 
 /* Create Event */
