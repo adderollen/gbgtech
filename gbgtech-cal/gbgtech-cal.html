@@ -90,18 +90,16 @@
 			<span class="date-container">{{day}}</span>
 			<span class="time-container">{{time}}</span>		
 		</div>
+		<img src="{{getImg org}}">
 		<div id="event-info-container">
 			<h6 class="big">{{name}}</h6>
 			<h6 class="thin">At: {{location}} - By: {{getOrg org}}</h6>
 			<p>{{description}}</p>
 		</div>
-		<div id="event-links-container">
-			{{#if fbLink}}
+		<div id="event-links-container" data-event="{{_id}}">
 			<a class="event-fb-link" href="{{fbLink}}"></a>
-			{{/if}}
-			{{#if meetupLink}}
 			<a class="event-meetup-link" href="{{meetupLink}}"></a>
-			{{/if}}
+			<a class="event-org-mail-link" href="{{getMailTo mail}}"></a>
 		</div>
 	</li>
 </template>
@@ -124,9 +122,10 @@
 				<input type="text" name="eventLocation" placeholder="Where does the event take place?" required>
 			</label>
 			<label>Description
-				<textarea name="eventDescription" cols="5" rows="4" placeholder="Add a small text describing the event..." required></textarea>
+				<textarea class="eventDesc" name="eventDescription" cols="5" rows="3" maxlength="120" placeholder="Add a small text describing the event..." required></textarea>
+				<span id="textAreaCount"></span>
 			</label>
-			<label>Organization
+			<label class="orgLabel">Organization
 				<select name="org" required>
 					{{#each organizations currentUser._id}}
 					<option value="{{id}}">{{name}}</option>
@@ -163,9 +162,10 @@
 				<input type="text" name="eventLocation" placeholder="Where does the event take place?" value="{{event.location}}" required>
 			</label>
 			<label>Description
-				<textarea name="eventDescription" cols="5" rows="4" placeholder="Add a small text describing the event..." value="{{event.description}}" required></textarea>
+				<textarea class="eventDesc" name="eventDescription" cols="5" rows="3" maxlength="120" placeholder="Add a small text describing the event..." value="{{event.description}}" required></textarea>
+				<span id="textAreaCount"></span>
 			</label>
-			<label>Organization
+			<label class="orgLabel">Organization
 				<select name="org">
 					{{#each organizations currentUser._id}}
 					<option value="{{id}}" {{isSelected _id ../event.org }}>{{name}}</option>
@@ -247,10 +247,12 @@
 			<label>Owner
 				<input type="text" name="orgOwner" value="{{currentUser.profile.name}}" disabled="true" required>
 			</label>
-			<label>Organization Name			
-				<input type="text" name="orgName" placeholder="E.g. AwesomeEvents" required>
+			<label>Name			
+				<input type="text" name="orgName" placeholder="The name of the organization" required>
 			</label>
-
+			<label>Logo
+				<input type="url" name="img" placeholder="Link to your logo (recommended size 250x250px)" required>
+			</label>
 			<input class="back-button button" type="button" value="Back">
 			<input type="submit" class="button" value="Create Organization">
 		</form>

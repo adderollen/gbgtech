@@ -184,7 +184,7 @@ Template.eventList.helpers({
 		y = date.getFullYear()
 		m = date.getMonth()
 		d = date.getDate()
-		var events = Events.find({"year": {$gte: y}, "month": {$gte: m}, "day": {$gte: d}}).fetch()
+		var events = Events.find({"year": {$gte: y}, "month": {$gte: m}, "day": {$gte: d}}, {sort: {"sortDate": 1}}).fetch()
 		return events;
 	}
 })
@@ -196,6 +196,57 @@ Template.eventListItem.helpers({
 
 	getMonth: function(monthNbr) {
 		return monthNames[monthNbr].substring(0,3).toUpperCase();
+	},
+
+	getMailTo: function(mail) {
+		if(mail) {
+			return "mailto: " + mail
+		} else {
+			return;
+		}
+	},
+
+	getImg: function(orgID) {
+		return Organizations.findOne(orgID).img
+	}
+})
+
+Template.eventListItem.events({
+	'mouseenter a': function(evt, template) {
+		var href = $(evt.target).attr('href')
+		if($(evt.target).hasClass('event-fb-link')) {
+			if(href) {
+				$(evt.target).attr('title', 'Go to the event at Facebook')
+				$(evt.target).css('background-image', 'url("/fb.png")')
+			} else {
+				$(evt.target).attr('title', 'No Facebook-link available')
+			}
+		} else if($(evt.target).hasClass('event-meetup-link')) {
+			if(href) {
+				$(evt.target).attr('title', 'Go to the event at Meetup')
+				$(evt.target).css('background-image', 'url("/meetup.png")')
+			} else {
+				$(evt.target).attr('title', 'No Meetup-link available')
+			}
+		} else {
+			if(href) {
+				$(evt.target).attr('title', 'Mail the organization')
+				$(evt.target).css('background-image', 'url("/email6.png")')	
+			} else {
+				$(evt.target).attr('title', 'No mail to the organization available')
+			}
+		}
+	},
+
+	'mouseleave a': function(evt, template) {
+		if($(evt.target).hasClass('event-fb-link')) {
+			$(evt.target).css('background-image', 'url("/fb_y.png")')
+		} else if($(evt.target).hasClass('event-meetup-link')) {
+			$(evt.target).css('background-image', 'url("/meetup_y.png")')
+			
+		} else {
+			$(evt.target).css('background-image', 'url("/email_y.png")')	
+		}
 	}
 })
 
@@ -267,18 +318,30 @@ Template.eventCreate.events({
 			month: m,
 			day: d,
 			date: date,
-			time: time
+			time: time,
+			sortDate: new Date(y,m,d,parseInt(time.substring(0,2)),parseInt(time.substring(3,5)))
 		})
 		Router.go('eventList')
 	},
 
 	'click .back-button': function(evt, template) {
 		window.history.back();
+	},
+
+	'keypress .eventDesc': function(evt, template) {
+		var maxLength = parseInt($(evt.target).attr('maxlength'))
+		var length = $(evt.target).val().length
+		$('#textAreaCount').text(maxLength - length + ' characters left out of ' + maxLength)
 	}
 })
 
 Template.eventEdit.rendered = function() {
 	var event = Events.findOne({"_id": document.URL.substring(28, 45)})
+	this.$('#datetimepicker').datetimepicker({
+		pickDate: false,
+		use24hours: true,
+		defaultDate: event.time
+	});
 	this.$('.datepicker').datepicker({
 		showOtherMonths: true,
 		inline: true,
@@ -309,6 +372,11 @@ Template.eventEdit.events({
 		evt.preventDefault();
 		var eventName = evt.target.eventName.value;
 		var org = Organizations.findOne({"name": evt.target.org.value});
+		var location = evt.target.eventLocation.value;
+		var description = evt.target.eventDescription.value;
+		var fbLink = evt.target.eventFacebookLink.value;
+		var meetupLink = evt.target.eventMeetupLink.value;
+		var time = evt.target.time.value;
 		var date = evt.target.date.value;
 		var y = parseInt(date.substring(0,4))
 		var m = parseInt(date.substring(5,7))
@@ -316,17 +384,28 @@ Template.eventEdit.events({
 		var d = parseInt(date.substring(8,10))
 		Events.update({"_id": document.URL.substring(28, 45)},{$set: {
 			name: eventName,
+			location: location,
+			description: description,
+			fbLink: fbLink,
+			meetupLink: meetupLink,
 			org: org._id,
 			year: y,
 			month: m,
 			day: d,
-			date: date
+			date: date,
+			time: time
 		}})
 		Router.go('adminPanel')
 	},
 
 	'click .back-button': function(evt, template) {
 		window.history.back();
+	},
+
+	'keypress .eventDesc': function(evt, template) {
+		var maxLength = parseInt($(evt.target).attr('maxlength'))
+		var length = $(evt.target).val().length
+		$('#textAreaCount').text(maxLength - length + ' characters left out of ' + maxLength)
 	}
 })
 
@@ -401,12 +480,14 @@ Template.orgCreate.events({
 		evt.preventDefault();
 		var orgName = evt.target.orgName.value;
 		var owner = Meteor.user()._id;
+		var img = evt.target.img.value;
 		Organizations.insert({
 			createdAt: new Date(),
 			owner: owner,
 			members: [owner],
 			requestingMembers: [],
-			name: orgName
+			name: orgName,
+			img: img
 		})
 		Router.go('orgList')
 	},

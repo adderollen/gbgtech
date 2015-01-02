@@ -301,13 +301,13 @@ border-radius: 10px !important;
 }
 
 .list .event-list li {
-	height: 100px;
 	box-shadow: 0px 1px 24px -7px;
 	display: flex;
+	margin-bottom: 1.5em;
 }
 
 .list .event-list li div {
-	
+
 }
 
 .list .event-list li div#event-date-container {
@@ -317,6 +317,7 @@ border-radius: 10px !important;
 	height: inherit;
 	display: flex;
 	flex-direction: column;
+	width: 220px;
 }
 
 .list .event-list li div#event-date-container span {
@@ -345,12 +346,20 @@ border-radius: 10px !important;
 }
 
 .list .event-list li div#event-date-container {
+	width: 100px
+}
+
+.list .event-list li img {
+	width: 105px;
+	height: 105px;
 }
 
 .list .event-list li div#event-info-container {
 	display: flex;
 	flex-direction: column;
 	padding-left: 0.7em;
+	width: 400px;
+	padding-right: 0.7em;
 }
 
 .list .event-list li div#event-info-container h6.big {
@@ -366,6 +375,37 @@ border-radius: 10px !important;
 
 .list .event-list li div#event-info-container p {
 	font-size: 0.8rem;
+	margin-bottom: 0;
+}
+
+.list .event-list li div#event-links-container {
+	width: 46px;
+	display: flex;
+	flex-direction: column;
+}
+
+.list .event-list li div#event-links-container a {
+	background-repeat: no-repeat;
+	height: 35px;
+}
+
+.list .event-list li div#event-links-container .event-fb-link {
+	background-image: url('/fb_y.png');
+	background-position-x: 8px;
+	background-position-y: 2px;
+}
+
+.list .event-list li div#event-links-container .event-meetup-link {
+	background-image: url('meetup_y.png');
+	background-size: 95%;
+	background-position-x: 1px;
+	background-position-y: 4px;
+}
+
+.list .event-list li div#event-links-container .event-org-mail-link {
+	background-image: url('email_y.png');
+	background-position-x: 7px;
+	background-position-y: 2px;
 }
 
 /* Create Event */
@@ -396,6 +436,14 @@ margin-left: auto;
 margin-right: auto;
 margin-bottom: 1em;
 display: block;
+}
+
+.eventDesc {
+	margin-bottom: 0
+}
+
+.orgLabel {
+	margin-top: 1rem;
 }
 
 /* Admin Panel */
