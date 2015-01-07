@@ -42,20 +42,22 @@
 </template>
 
 <template name="month">
-	<input id="prev-month" class="month-nav" type="button" value="<- Previous Month">
-	<p class="month-nav">{{currentMonthAndYear}}</p>
-	<input id="next-month" class="month-nav" type="button" value="Next Month ->">
+	<div id="month-nav">
+		<a id="prev-month" href="#" class="month-nav-button"></a>
+		<p class="month-nav-text">{{currentMonthAndYear}}</p>
+		<a id="next-month" href="#" class="month-nav-button"></a>
+	</div>
 	<div id="month-container">
 		<table>
 			<thead>
 				<tr>
-					<td>Monday</td>
-					<td>Tuesday</td>
-					<td>Wednesday</td>
-					<td>Thursday</td>
-					<td>Friday</td>
-					<td>Saturday</td>
-					<td>Sunday</td>
+					<td>Mon</td>
+					<td>Tue</td>
+					<td>Wed</td>
+					<td>Thu</td>
+					<td>Fri</td>
+					<td>Sat</td>
+					<td>Sun</td>
 				</tr>
 			</thead>
 			<tbody id="week-container">
@@ -137,7 +139,7 @@
 					<input type="text" class="datepicker" name="date" placeholder="Date for event" required>
 				</label>
 				<label>Time
-				<input id="datetimepicker" name="time" class="form-control" type="text" data-date-format="HH:mm" placeholder="Time for event" required/>
+					<input id="datetimepicker" name="time" class="form-control" type="text" data-date-format="HH:mm" placeholder="Time for event" required/>
 				</label>
 			</div>
 			<label>Link to Facebook-event

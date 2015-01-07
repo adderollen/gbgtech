@@ -122,7 +122,8 @@ Template.month.rendered = function() {
 
 		var events = Events.find({year: y, month: m}).fetch();
 		events.forEach(function(event) {
-			$('#'+y+"-"+m+"-"+event.day).append('<a href="/event/'+event._id+'">'+event.name+'</a>')
+			$('#'+y+"-"+m+"-"+event.day).addClass('event-date')
+			$('#'+y+"-"+m+"-"+event.day).append('<span class="tooltip__content"><span class="tooltip__content-inner">Text</span></span>')
 		})
 	})
 };
@@ -143,7 +144,7 @@ Template.month.helpers({
 })
 
 Template.month.events({
-	'click input#next-month': function(evt, template) {
+	'click a#next-month': function(evt, template) {
 		var m = Session.get('currentMonth')
 		var y = Session.get('currentYear')
 		if(m == 11) {
@@ -156,7 +157,7 @@ Template.month.events({
 		document.location.hash = y+monthNames[m]
 	},
 
-	'click input#prev-month': function(evt, template) {
+	'click a#prev-month': function(evt, template) {
 		var m = Session.get('currentMonth')
 		var y = Session.get('currentYear')
 		if(m == 0) {
@@ -169,12 +170,12 @@ Template.month.events({
 		document.location.hash = y+monthNames[m]	
 	},
 
-	'mouseenter a': function(evt,template) {
-		// Add a tooltip for the event
+	'mouseenter .event-date': function(evt,template) {
+		$(evt.target).toggleClass('is-active');
 	},
 
-	'mouseleave a': function(evt,template) {
-		// Remove the tooltip for the event
+	'mouseleave .event-date': function(evt,template) {
+		$(evt.target).toggleClass('is-active');
 	}
 })
 

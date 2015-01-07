@@ -5,7 +5,7 @@
 
 /* Text */
 
-h1, h2, h3, h4, h5, h6, p, a, span, label, .button {
+h1, h2, h3, h4, h5, h6, p, a, span, label, .button, #month-container tr td {
 	font-family: 'Muli', sans-serif;
 	font-weight: 400;
 }
@@ -109,8 +109,8 @@ a:hover {
 
 .button {
 	background: #f1bb1b;
-color: black;
-border-radius: 10px !important;
+	color: black;
+	border-radius: 10px !important;
 }
 
 .button:hover {
@@ -278,9 +278,175 @@ border-radius: 10px !important;
 }
 
 /* Month-view */
-.month-nav {
-	display: inline-block;
+
+#month-nav {
+	text-align: center;
 }
+.month-nav-text {
+	display: inline-block;
+	padding-right: 3em;
+	padding-left: 3em;
+}
+
+.month-nav-button {
+	display: inline-block;
+	width: 35px;
+	height: 35px;
+	background-repeat: no-repeat;
+	background-size: 30%;
+	position: relative;
+	background-position: center;
+	margin-bottom: -12px;
+	border-radius: 100%;
+}
+
+#prev-month {
+	background-image: url("/previous.png");
+	background-position-x: 12px;
+}
+
+#next-month {
+	background-image: url("/next.png");
+	background-position-x: 14px;
+}
+
+.month-nav-button:hover {
+	background-color: #f1bb1b;
+}
+
+#month-container table {
+	width: 42em;
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	box-shadow: 0px 0px 40px 0px rgb(226, 226, 226);
+}
+
+#month-container tbody tr {
+	height: 6em;
+}
+
+#month-container thead {
+	background-color: transparent;
+}
+
+#month-container tr:nth-of-type(even) {
+	background-color: transparent;
+}
+
+#month-container thead td {
+	font-weight: bold;
+}
+
+#month-container tr td {
+	text-align: center;
+	color: #f1bb1b;
+}
+
+#month-container tbody tr td {
+	font-size: 2rem;
+}
+
+#month-container tbody tr td:hover {
+	background-color: whitesmoke;
+}
+
+#month-container tbody tr td.event-date {
+	background-color: #f1bb1b;
+	color: white;
+}
+
+#month-container tbody tr td.event-date:hover {
+	background-color: #BE8F03;
+}
+
+/* Positioning */
+.tooltip.content {
+	position: absolute;
+	bottom: 2em;
+	opacity: .8;
+	backface-visibility: hidden;
+
+	left: -9999px;
+	transition: 0s left 0.2s;
+	
+}
+
+.tooltip.content.is-active {
+		left: 50%;
+		transition: 0s left 0s;
+	}
+
+.tooltip__content {
+	position: absolute;
+	bottom: 2em;
+	opacity: .8;
+	backface-visibility: hidden;
+	left: -9999px;
+	transition: 0s left 0.2s;
+}
+.is-active .tooltip__content {
+	left: 50%;
+	transition: 0s left 0s;
+}
+.tooltip__content-inner {
+	position: relative;
+	margin-left: -100%;
+	display: block;
+	padding: 0.75em;
+	color: rgba(0, 0, 0, 0.5);
+	font-size: .75em;
+	border-radius: 6px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 -1px 0 rgba(0, 0, 0, 0.05) inset;
+	background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.9) 85%, #ffffff 100%);
+	opacity: 0;
+	-webkit-filter: blur(40px);
+	transform: translateY(-80%) perspective(500px) rotateX(-45deg) scale(1.8);
+	transition: all 0.2s cubic-bezier(0.49, 0.2, 0.69, 1.61);
+  /**
+   * Tooltip triangle
+   */
+}
+.is-active .tooltip__content-inner {
+	color: rgba(0, 0, 0, 0.5);
+	opacity: .95;
+	-webkit-filter: blur(0);
+	transform: translateY(0) scale(1);
+}
+.tooltip__content-inner:before, .tooltip__content-inner:after {
+	position: absolute;
+	left: 50%;
+	margin-left: -6px;
+	bottom: -6px;
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 6px solid rgba(0, 0, 0, 0.3);
+}
+.tooltip__content-inner:after {
+	bottom: -5px;
+	border-top-color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .list {
 	width: 50%;
@@ -432,10 +598,10 @@ border-radius: 10px !important;
 
 .datepicker {
 	width: 35%;
-margin-left: auto;
-margin-right: auto;
-margin-bottom: 1em;
-display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1em;
+	display: block;
 }
 
 .eventDesc {
