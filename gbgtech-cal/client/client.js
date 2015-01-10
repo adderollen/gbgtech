@@ -121,9 +121,11 @@ Template.month.rendered = function() {
 		var y = Session.get('currentYear')
 
 		var events = Events.find({year: y, month: m}).fetch();
+		var org;
 		events.forEach(function(event) {
+			org = Organizations.findOne(event.org);
 			$('#'+y+"-"+m+"-"+event.day).addClass('event-date')
-			$('#'+y+"-"+m+"-"+event.day).append('<span class="tooltip__content"><span class="tooltip__content-inner">Text</span></span>')
+			$('#'+y+"-"+m+"-"+event.day).append('<span class="tooltip__content"><span class="tooltip__content-inner">'+event.time+': '+event.name+' by '+org.name+'</span></span>')
 		})
 	})
 };
@@ -171,11 +173,24 @@ Template.month.events({
 	},
 
 	'mouseenter .event-date': function(evt,template) {
-		$(evt.target).toggleClass('is-active');
+		if($(evt.target).hasClass('event-date')) {
+			console.log("Has class")
+		}
+		$(evt.target).addClass('is-active');
 	},
 
 	'mouseleave .event-date': function(evt,template) {
-		$(evt.target).toggleClass('is-active');
+		$(evt.target).removeClass('is-active');
+
+	},
+
+	'click .event-date': function(evt, template) {
+		var eventDate = $(evt.target).attr('id');
+		var y = parseInt(eventDate.substring(0,4))
+		var m = parseInt(eventDate.substring(5,6))
+		var d = parseInt(eventDate.substring(7))
+		var event = Events.findOne({"year": y, "month": m, "day": d})
+		window.location.href = "/event/"+event._id
 	}
 })
 
@@ -248,6 +263,19 @@ Template.eventListItem.events({
 		} else {
 			$(evt.target).css('background-image', 'url("/email_y.png")')	
 		}
+	},
+
+	'mouseenter li': function(evt, template) {
+		$(template.firstNode).css("box-shadow", "0px 1px 24px 3px #f1bb1b")
+		
+	},
+
+	'mouseleave li': function(evt, template) {
+		$(template.firstNode).css("box-shadow", "0px 1px 24px -7px black")
+	},
+
+	'click li': function(evt, template) {
+		window.location.href = "/event/"+template.data._id;
 	}
 })
 
@@ -435,9 +463,11 @@ Template.orgEdit.events({
 		var orgName = evt.target.orgName.value;
 		var owner = evt.target.owner.value;
 		var id = $(evt.target).data('id')
+		var img = evt.target.img.value;
 		Organizations.update({_id: id}, {$set: {
 			owner: owner,
-			name: orgName
+			name: orgName,
+			img: img
 		}})
 		Router.go('adminPanel')
 	},

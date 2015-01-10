@@ -345,6 +345,7 @@ a:hover {
 
 #month-container tbody tr td {
 	font-size: 2rem;
+	position: relative;
 }
 
 #month-container tbody tr td:hover {
@@ -361,25 +362,10 @@ a:hover {
 }
 
 /* Positioning */
-.tooltip.content {
-	position: absolute;
-	bottom: 2em;
-	opacity: .8;
-	backface-visibility: hidden;
-
-	left: -9999px;
-	transition: 0s left 0.2s;
-	
-}
-
-.tooltip.content.is-active {
-		left: 50%;
-		transition: 0s left 0s;
-	}
 
 .tooltip__content {
 	position: absolute;
-	bottom: 2em;
+	bottom: 3em;
 	opacity: .8;
 	backface-visibility: hidden;
 	left: -9999px;
@@ -430,22 +416,6 @@ a:hover {
 	bottom: -5px;
 	border-top-color: white;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .list {

@@ -195,11 +195,13 @@
 </template>
 
 <template name="orgList">
-	<ul>
+<div class="list">
+	<ul class="org-list">
 		{{#each organizations}}
 		<li><a href="/organization/{{_id}}">{{name}}</a></li>	
 		{{/each}}
 	</ul>
+	</div>
 </template>
 
 <template name="orgEdit">
@@ -213,7 +215,13 @@
 					{{/each}}
 				</select>
 			</label>
-			<input type="text" name="orgName" placeholder="Organization name" required value="{{org.name}}">
+			<label>Name			
+				<input type="text" name="orgName" placeholder="The name of the organization" value="{{org.name}}" required>
+			</label>
+			<label>Logo
+				<input type="url" name="img" placeholder="Link to your logo (recommended size 250x250px)" value="{{org.img}}" required>
+			</label>
+			
 			<input class="back-button button" type="button" value="Back">
 			<input type="submit" class="button" value="Edit Organization">
 		</form>
